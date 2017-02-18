@@ -2,16 +2,22 @@ package org.techm.scheduler.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 /** Class encapsulating the SchedulerKey properties of a job and trigger. */
+@Embeddable
 public class SchedulerKey implements Serializable {
 
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
     
     /** The name associated to this job and trigger. */
+    @Column(name="NAME")
     private String name;
     
     /** The group associated to this job and trigger. */
+    @Column(name="GROUP")
     private String group;
     
     /**

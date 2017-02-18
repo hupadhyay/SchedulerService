@@ -4,32 +4,53 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.MapKey;
+import javax.persistence.Table;
+
 /**
  * 
  * @author Himanshu
  *
  */
+@Entity
+@Table(name="TRIGGER")
 public class Trigger implements Serializable {
 
 	/** Serial version UID. */
 	private static final long serialVersionUID = 1L;
 	
 	/** Id of trigger. */
+	@Id
+	@Column(name="ID")
 	private String id;
 
 	/** Name of this trigger . */
+	@Column(name="NAME")
 	private String name;
 
 	/** Scheduler of this trigger. */
+	@Enumerated(EnumType.STRING)
+	@Column(name="SCHEDULER_TYPE")
 	private SchedulerType schedulerType;
 
-	/** The simple scheduler attributes of this trigger. */
-	private Map<String, String> simpleSchedularAttrs = new HashMap<>();
-
 	/** The cron scheduler attributes of this trigger. */
-	private Map<String, String> cronSchedularAttrs = new HashMap<>();
+	@ElementCollection(fetch=FetchType.EAGER)
+	@JoinTable(name="TRIGGER_ATTRIB", joinColumns=@JoinColumn(name="TRIGGER_ID"))
+	@MapKey(name="ATTRIB_KEY")
+	private Map<String, String> schedularAttrs = new HashMap<>();
 
 	/** SchedulerKey of this trigger. */
+	@Embedded
 	private SchedulerKey schedulerKey;
 	
 	/**
@@ -89,41 +110,22 @@ public class Trigger implements Serializable {
 	}
 
 	/**
-	 * Gets the jobDataAttributes.
-	 * 
-	 * @return Returns the jobDataAttributes.
-	 */
-	public Map<String, String> getSimpleSchedularAttrs() {
-		return simpleSchedularAttrs;
-	}
-
-	/**
-	 * Setter for simpleSchedularAttrs.
-	 *
-	 * @param newSimpleSchedularAttrs
-	 *            The simpleSchedularAttrs to set.
-	 */
-	public void setSimpleSchedularAttrs(Map<String, String> newSimpleSchedularAttrs) {
-		simpleSchedularAttrs = newSimpleSchedularAttrs;
-	}
-
-	/**
 	 * Gets the cronSchedularAttrs.
 	 * 
 	 * @return Returns the cronSchedularAttrs.
 	 */
 	public Map<String, String> getCronSchedularAttrs() {
-		return cronSchedularAttrs;
+		return schedularAttrs;
 	}
 
 	/**
-	 * Setter for cronSchedularAttrs.
+	 * Setter for schedularAttrs.
 	 *
-	 * @param newCronSchedularAttrs
-	 *            The cronSchedularAttrs to set.
+	 * @param newSchedularAttrs
+	 *            The schedularAttrs to set.
 	 */
-	public void setCronSchedularAttrs(Map<String, String> newCronSchedularAttrs) {
-		cronSchedularAttrs = newCronSchedularAttrs;
+	public void setCronSchedularAttrs(Map<String, String> newSchedularAttrs) {
+		schedularAttrs = newSchedularAttrs;
 	}
 
 	/**
@@ -150,8 +152,7 @@ public class Trigger implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Trigger [id=" + id + ", name=" + name + ", schedulerType=" + schedulerType + ", simpleSchedularAttrs="
-				+ simpleSchedularAttrs + ", cronSchedularAttrs=" + cronSchedularAttrs + ", schedulerKey=" + schedulerKey
-				+ "]";
+		return "Trigger [id=" + id + ", name=" + name + ", schedulerType=" + schedulerType + ", schedularAttrs="
+				+ schedularAttrs + ", schedulerKey=" + schedulerKey + "]";
 	}
 }

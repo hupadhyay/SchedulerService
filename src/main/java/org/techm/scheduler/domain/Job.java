@@ -4,25 +4,47 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.MapKey;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /** Class which represents job for scheduler. */
+@Entity
+@Table(name = "JOB")
 public class Job implements Serializable {
 
 	/** Serial version UID. */
 	private static final long serialVersionUID = 1L;
 	
 	/** Id of Job. */
+	@Id
+	@Column(name="ID")
 	private String id;
 
 	/** Name of this job . */
+	@Column(name="ID")
 	private String name;
 
 	/** The data attributes of this job. */
+	@ElementCollection(fetch=FetchType.EAGER)
+	@JoinTable(name="JOB_ATTRIB", joinColumns=@JoinColumn(name="JOB_ID"))
+	@MapKey(name="ATTRIB_KEY")
 	private Map<String, String> jobDataAttributes = new HashMap<>();
 
 	/** JobAction of this job. */
+	@OneToOne
 	private JobAction jobAction;
 
 	/** SchedulerKey of this job. */
+	@Embedded
 	private SchedulerKey schedulerKey;
 	
 	/**

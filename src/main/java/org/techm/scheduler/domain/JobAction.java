@@ -2,6 +2,10 @@ package org.techm.scheduler.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 /** Class encapsulating the job action properties of a job. */
 public class JobAction implements Serializable {
 
@@ -9,27 +13,36 @@ public class JobAction implements Serializable {
     private static final long serialVersionUID = 1L;
     
     /** The action type associated to this job action. */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ACION_TYPE")
     private ActionType actionType;
     
     /** The device id associated to this job action. */
+    @Column(name = "DEVICE_ID")
     private String deviceId;
     
     /** The command id associated to this job action. */
+    @Column(name = "COMMAND_ID")
     private String commandId;
     
     /** The event id associated to this job action. */
+    @Column(name = "EVENT_ID")
     private String eventId;
     
     /** The message associated to this job action. */
+    @Column(name = "MESSAGE")
     private String message;
     
     /** The group id associated to this job action. */
+    @Column(name = "GROUP_ID")
     private String groupId;
     
     /** The stream id associated to this job action. */
+    @Column(name = "STREAM_ID")
     private String streamId;
     
     /** The ruleTrigger id associated to this job action. */
+    @Column(name = "RULE_TRIGGER_ID")
     private String ruleTriggerId;
     
 

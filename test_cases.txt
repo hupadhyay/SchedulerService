@@ -1,0 +1,28 @@
+Job Json:
+
+ {"name":[{"text":"config_Job_ON","lang":"en_US"}],"jobKey":{"name":"JOB_ON_1cd4e600-3b60-428a-a7ec-8cb0e6f3b8c1","group":"ON_GROUP"},"jobAction":{"actionType":"Command","streamId":"9cb28d8f-06f5-4347-b0f2-ee296e8098bb","groupId":"commandGroup","message":"{\"command\":\"EOO\",\"switchInternalId\":\"S00002\",\"action\":\"ON\",\"phase\":\"All\"}","deviceId":"1cd4e600-3b60-428a-a7ec-8cb0e6f3b8c1","commandId":"474bc5cd-76d3-4ab4-8c2f-e0a02510e68e"},"creation":1487465215832,"jobDataAttributes":[{"name":"testName","value":"testValue"}]}
+ 
+ 
+{
+  	"id" : "JOB_ON_1cd4e600-3b60-428a-a7ec-8cb0e6f3b8c1",
+	"name": "config_Job_ON",
+	"jobKey": {
+		"name": "1cd4e600-3b60-428a-a7ec-8cb0e6f3b8c1",
+		"group": "ON_GROUP"
+	},
+	"jobAction": {
+		"actionType": "Command",
+		"streamId": "9cb28d8f-06f5-4347-b0f2-ee296e8098bb",
+		"groupId": "commandGroup",
+		"message": "{\"command\":\"EOO\",\"switchInternalId\":\"S00002\",\"action\":\"ON\",\"phase\":\"All\"}",
+		"deviceId": "1cd4e600-3b60-428a-a7ec-8cb0e6f3b8c1",
+		"commandId": "474bc5cd-76d3-4ab4-8c2f-e0a02510e68e"
+	},
+	"jobDataAttributes": [{
+		"name": "testName",
+		"value": "testValue"
+	}]
+}
+
+Trigger Json:
+

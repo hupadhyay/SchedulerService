@@ -13,11 +13,11 @@ public class SchedulerKey implements Serializable {
     private static final long serialVersionUID = 1L;
     
     /** The name associated to this job and trigger. */
-    @Column(name="NAME")
+    @Column(name="KEY_NAME")
     private String name;
     
     /** The group associated to this job and trigger. */
-    @Column(name="GROUP")
+    @Column(name="KEY_GROUP")
     private String group;
     
     /**

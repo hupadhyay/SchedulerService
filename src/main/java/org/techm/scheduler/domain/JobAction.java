@@ -3,14 +3,25 @@ package org.techm.scheduler.domain;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /** Class encapsulating the job action properties of a job. */
+@Entity
+@Table(name="JOB_ACTION")
 public class JobAction implements Serializable {
 
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
     
     /** The action type associated to this job action. */
     @Enumerated(EnumType.STRING)
@@ -45,6 +56,23 @@ public class JobAction implements Serializable {
     @Column(name = "RULE_TRIGGER_ID")
     private String ruleTriggerId;
     
+    /**
+     * Gets the Id of jobAction.
+     * 
+     * @return Returns the Id.
+     */
+    public Long getId() {
+		return id;
+	}
+    
+    /**
+     * Sets the Id of job.
+     * 
+     * @param id of the jobAction to set.
+     */
+    public void setId(Long id) {
+		this.id = id;
+	}
 
     /**
      * Gets the action type  of job.

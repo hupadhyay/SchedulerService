@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -23,30 +24,29 @@ public class Job implements Serializable {
 
 	/** Serial version UID. */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** Id of Job. */
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	private String id;
 
 	/** Name of this job . */
-	@Column(name="ID")
+	@Column(name = "NAME")
 	private String name;
 
 	/** The data attributes of this job. */
-	@ElementCollection(fetch=FetchType.EAGER)
-	@JoinTable(name="JOB_ATTRIB", joinColumns=@JoinColumn(name="JOB_ID"))
-	@MapKey(name="ATTRIB_KEY")
+	@ElementCollection(fetch = FetchType.EAGER)
+	@JoinTable(name = "JOB_ATTRIB", joinColumns = @JoinColumn(name = "JOB_ID"))
 	private Map<String, String> jobDataAttributes = new HashMap<>();
 
 	/** JobAction of this job. */
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private JobAction jobAction;
 
 	/** SchedulerKey of this job. */
 	@Embedded
 	private SchedulerKey schedulerKey;
-	
+
 	/**
 	 * Getter method for id.
 	 * 
@@ -55,7 +55,7 @@ public class Job implements Serializable {
 	public String getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Setter method for id.
 	 * 
@@ -64,7 +64,7 @@ public class Job implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * Gets the name for this job.
 	 * 
@@ -90,7 +90,7 @@ public class Job implements Serializable {
 	 * 
 	 * @return Returns the jobDataAttributes.
 	 */
-    public Map<String, String> getJobDataAttributes() {
+	public Map<String, String> getJobDataAttributes() {
 		return jobDataAttributes;
 	}
 
@@ -101,7 +101,7 @@ public class Job implements Serializable {
 	 *            The jobDataAttributes to set.
 	 * 
 	 */
-    public void setJobDataAttributes(Map<String, String> newJobDataAttributes) {
+	public void setJobDataAttributes(Map<String, String> newJobDataAttributes) {
 		jobDataAttributes = newJobDataAttributes;
 	}
 
@@ -123,7 +123,7 @@ public class Job implements Serializable {
 	public void setJobAction(JobAction newJobAction) {
 		jobAction = newJobAction;
 	}
-	
+
 	/**
 	 * Gets schedulerKey.
 	 * 

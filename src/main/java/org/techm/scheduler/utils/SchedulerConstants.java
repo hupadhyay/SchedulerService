@@ -7,6 +7,18 @@ package org.techm.scheduler.utils;
  *
  */
 public class SchedulerConstants {
+	
+	/** Name of the media type for Job. */
+	public static final String JOB_MIME = "scheduler/job.mime";
+	
+	/** Name of the media type for Trigger. */
+	public static final String TRIGGER_MIME = "scheduler/trigger.mime";
+	
+	/** Name of the media type for Config. */
+	public static final String CONFIG_MIME = "scheduler/config.mime";
+	
+	/** Name of the JSON property carrying the resource id. */
+    public static final String ID_PROP = "id";
 
     /** Name of the JSON property carrying the resource name. */
     public static final String NAME_PROP = "name";

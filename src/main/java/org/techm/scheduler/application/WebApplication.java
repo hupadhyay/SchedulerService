@@ -7,9 +7,13 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.techm.scheduler.respository.JobRepository;
+import org.techm.scheduler.respository.TriggerRepository;
 import org.techm.scheduler.respository.impl.JobRepositoryImpl;
+import org.techm.scheduler.respository.impl.TriggerRepositoryImpl;
 import org.techm.scheduler.service.JobService;
+import org.techm.scheduler.service.TriggerService;
 import org.techm.scheduler.service.impl.JobServiceImpl;
+import org.techm.scheduler.service.impl.TriggerServiceImpl;
 
 /**
  * Execution point of web application.
@@ -33,6 +37,8 @@ public class WebApplication extends ResourceConfig {
 			protected void configure() {
 				bind(JobServiceImpl.class).to(JobService.class);
 				bind(JobRepositoryImpl.class).to(JobRepository.class);
+				bind(TriggerServiceImpl.class).to(TriggerService.class);
+				bind(TriggerRepositoryImpl.class).to(TriggerRepository.class);
 			}
 		});
 	}

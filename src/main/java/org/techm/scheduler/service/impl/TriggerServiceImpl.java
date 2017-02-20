@@ -2,6 +2,8 @@ package org.techm.scheduler.service.impl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.respository.TriggerRepository;
 import org.techm.scheduler.service.TriggerService;
@@ -9,6 +11,11 @@ import org.techm.scheduler.service.TriggerService;
 public class TriggerServiceImpl implements TriggerService {
 
 	private TriggerRepository triggerRepository;
+	
+	@Inject
+	public TriggerServiceImpl(TriggerRepository triggerRepository){
+		this.triggerRepository = triggerRepository;
+	}
 
 	@Override
 	public Trigger createTrigger(Trigger trigger) {

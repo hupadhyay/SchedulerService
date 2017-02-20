@@ -72,7 +72,7 @@ public class SchedulerConstants {
     public static final String SIMPLE_SCHEDULER_ATTRIBUTES_PROP = "simpleSchedulerAttributes";
 
     /** Name of the JSON property carrying the resource cron scheduler attributes. */
-    public static final String CRON_SCHEDULER_ATTRIBUTES_PROP = "cronSchedulerAttributes";
+    public static final String SCHEDULER_ATTRIBUTES_PROP = "schedulerAttributes";
 
     /** Name of the JSON property carrying the resource job key. */
     public static final String JOB_KEY_PROP = "jobKey";

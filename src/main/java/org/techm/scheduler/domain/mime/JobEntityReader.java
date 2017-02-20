@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -35,7 +33,7 @@ public class JobEntityReader implements MessageBodyReader<Job> {
 
 	@Override
 	public boolean isReadable(Class<?> typeClass, Type type, Annotation[] annotations, MediaType mediaType) {
-		// TODO Auto-generated method stub
+		
 		return (type == Job.class && mediaType.toString().equals(SchedulerConstants.JOB_MIME));
 	}
 
@@ -121,14 +119,14 @@ public class JobEntityReader implements MessageBodyReader<Job> {
 		JsonArray jsonDataAttributes = jsonJob.getJsonArray(SchedulerConstants.JOB_DATA_ATTRIBUTES_PROP);
 
 		JsonObject jsonDataAttrib = null;
-		Map<String, String> setDataAttributes = new HashMap<>();
+		Map<String, String> mapDataAttributes = new HashMap<>();
 		for (int i = 0; i < jsonDataAttributes.size(); i++) {
 			jsonDataAttrib = jsonDataAttributes.getJsonObject(i);
-			setDataAttributes.put(jsonDataAttrib.getString(SchedulerConstants.NAME_PROP),
+			mapDataAttributes.put(jsonDataAttrib.getString(SchedulerConstants.NAME_PROP),
 					jsonDataAttrib.getString(SchedulerConstants.VALUE_PROP));
 		}
 
-		job.setJobDataAttributes(setDataAttributes);
+		job.setJobDataAttributes(mapDataAttributes);
 
 		return job;
 	}

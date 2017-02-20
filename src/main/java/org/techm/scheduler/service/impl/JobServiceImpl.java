@@ -9,7 +9,6 @@ import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.respository.JobRepository;
 import org.techm.scheduler.service.JobService;
 
-@Singleton
 public class JobServiceImpl implements JobService{
 	
 	private JobRepository jobRepository;

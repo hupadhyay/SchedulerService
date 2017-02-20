@@ -12,7 +12,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.service.JobService;
@@ -59,12 +58,5 @@ public class JobController {
 	@Path("{jobId}")
 	public boolean deleteJob(@NotNull @PathParam("jobId") String jobId) {
 		return jobService.deleteJob(jobId);
-	}
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("hello")
-	public String testMethod() {
-		return "Hello Himanshu";
 	}
 }

@@ -14,7 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.MapKey;
 import javax.persistence.Table;
 
 /**
@@ -46,8 +45,7 @@ public class Trigger implements Serializable {
 	/** The cron scheduler attributes of this trigger. */
 	@ElementCollection(fetch=FetchType.EAGER)
 	@JoinTable(name="TRIGGER_ATTRIB", joinColumns=@JoinColumn(name="TRIGGER_ID"))
-	@MapKey(name="ATTRIB_KEY")
-	private Map<String, String> schedularAttrs = new HashMap<>();
+	private Map<String, String> schedularAttributes = new HashMap<>();
 
 	/** SchedulerKey of this trigger. */
 	@Embedded
@@ -114,8 +112,8 @@ public class Trigger implements Serializable {
 	 * 
 	 * @return Returns the cronSchedularAttrs.
 	 */
-	public Map<String, String> getCronSchedularAttrs() {
-		return schedularAttrs;
+	public Map<String, String> getSchedularAttributes() {
+		return schedularAttributes;
 	}
 
 	/**
@@ -124,8 +122,8 @@ public class Trigger implements Serializable {
 	 * @param newSchedularAttrs
 	 *            The schedularAttrs to set.
 	 */
-	public void setCronSchedularAttrs(Map<String, String> newSchedularAttrs) {
-		schedularAttrs = newSchedularAttrs;
+	public void setSchedularAttributes(Map<String, String> newSchedularAttrs) {
+		schedularAttributes = newSchedularAttrs;
 	}
 
 	/**
@@ -153,6 +151,6 @@ public class Trigger implements Serializable {
 	@Override
 	public String toString() {
 		return "Trigger [id=" + id + ", name=" + name + ", schedulerType=" + schedulerType + ", schedularAttrs="
-				+ schedularAttrs + ", schedulerKey=" + schedulerKey + "]";
+				+ schedularAttributes + ", schedulerKey=" + schedulerKey + "]";
 	}
 }

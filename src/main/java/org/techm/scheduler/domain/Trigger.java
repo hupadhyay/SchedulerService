@@ -11,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -33,7 +31,6 @@ public class Trigger implements Serializable {
 	/** Id of trigger. */
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private String id;
 
 	/** Name of this trigger . */

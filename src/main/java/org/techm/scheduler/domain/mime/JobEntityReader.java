@@ -34,7 +34,7 @@ public class JobEntityReader implements MessageBodyReader<Job> {
 	@Override
 	public boolean isReadable(Class<?> typeClass, Type type, Annotation[] annotations, MediaType mediaType) {
 		
-		return (type == Job.class && mediaType.toString().equals(SchedulerConstants.JOB_MIME));
+		return (typeClass == Job.class && mediaType.toString().equals(SchedulerConstants.JOB_MIME));
 	}
 
 	@Override

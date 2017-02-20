@@ -3,38 +3,40 @@ package org.techm.scheduler.service.impl;
 import java.util.List;
 
 import org.techm.scheduler.domain.Config;
+import org.techm.scheduler.respository.ConfigRepository;
 import org.techm.scheduler.service.ConfigService;
 
 public class ConfigServiceImpl implements ConfigService {
 
+	private ConfigRepository configRepository;
+	
+	public ConfigServiceImpl(ConfigRepository configRepository) {
+		this.configRepository = configRepository;
+	}
+	
 	@Override
 	public Config createConfig(Config config) {
-		// TODO Auto-generated method stub
-		return null;
+		return configRepository.createConfig(config);
 	}
 
 	@Override
 	public Config updateConfig(Config config) {
-		// TODO Auto-generated method stub
-		return null;
+		return configRepository.updateConfig(config);
 	}
 
 	@Override
 	public Config getConfigById(String configId) {
-		// TODO Auto-generated method stub
-		return null;
+		return configRepository.getConfigById(configId);
 	}
 
 	@Override
 	public List<Config> getAllConfigs() {
-		// TODO Auto-generated method stub
-		return null;
+		return configRepository.getAllConfigs();
 	}
 
 	@Override
 	public boolean deleteConfig(String configId) {
-		// TODO Auto-generated method stub
-		return false;
+		return configRepository.deleteConfig(configId);
 	}
 
 }

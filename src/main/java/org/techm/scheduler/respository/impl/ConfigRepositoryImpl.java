@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.techm.scheduler.domain.Config;
-import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.respository.ConfigRepository;
 import org.techm.scheduler.utils.HibernateUtils;
 
@@ -78,6 +77,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
 
+			session.beginTransaction();
+
 			config = session.get(Config.class, configId);
 
 			session.getTransaction().commit();
@@ -101,7 +102,9 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
 
-			listOfConfigs = session.createQuery("from Config").getResultList();
+			session.beginTransaction();
+
+			listOfConfigs = session.createQuery("from Config", Config.class).getResultList();
 
 			session.getTransaction().commit();
 
@@ -124,6 +127,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 		try {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
+
+			session.beginTransaction();
 
 			config = session.get(Config.class, configId);
 			session.delete(config);

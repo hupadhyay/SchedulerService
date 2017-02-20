@@ -77,6 +77,8 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
 
+			session.beginTransaction();
+			
 			trigger = session.get(Trigger.class, triggerId);
 
 			session.getTransaction().commit();
@@ -100,7 +102,9 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
 			
-			listOfTrigger = session.createQuery("from Trigger").getResultList();
+			session.beginTransaction();
+			
+			listOfTrigger = session.createQuery("from Trigger", Trigger.class).getResultList();
 			
 			session.getTransaction().commit();
 			
@@ -123,6 +127,8 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 		try {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
+			
+			session.beginTransaction();
 			
 			trigger = session.get(Trigger.class, triggerId);
 			session.delete(trigger);

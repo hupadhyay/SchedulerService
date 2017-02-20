@@ -77,6 +77,8 @@ public class JobRepositoryImpl implements JobRepository {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
 
+			session.beginTransaction();
+			
 			job = session.get(Job.class, jobId);
 
 			session.getTransaction().commit();
@@ -101,7 +103,9 @@ public class JobRepositoryImpl implements JobRepository {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
 			
-			listOfJob = session.createQuery("from Job").getResultList();
+			session.beginTransaction();
+			
+			listOfJob = session.createQuery("from Job", Job.class).getResultList();
 			
 			session.getTransaction().commit();
 			
@@ -124,6 +128,8 @@ public class JobRepositoryImpl implements JobRepository {
 		try {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
+			
+			session.beginTransaction();
 			
 			job = session.get(Job.class, jobId);
 			session.delete(job);

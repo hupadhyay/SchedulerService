@@ -2,6 +2,8 @@ package org.techm.scheduler.service.impl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.respository.ConfigRepository;
 import org.techm.scheduler.service.ConfigService;
@@ -10,6 +12,7 @@ public class ConfigServiceImpl implements ConfigService {
 
 	private ConfigRepository configRepository;
 	
+	@Inject
 	public ConfigServiceImpl(ConfigRepository configRepository) {
 		this.configRepository = configRepository;
 	}

@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
 import javax.ws.rs.WebApplicationException;
@@ -110,6 +111,12 @@ public class ConfigEntityWriter implements MessageBodyWriter<Config> {
 		if (config.getLastExecutionTime() != null) {
 			configBuilder.add(SchedulerConstants.LAST_EXECUTION, config.getLastExecutionTime());
 		}
+		
+		JsonObject jsonObject = configBuilder.build();
+		
+		jsonWriter.writeObject(jsonObject);
+		
+		jsonWriter.close();
 
 	}
 

@@ -33,8 +33,8 @@ public class TriggerServiceImpl implements TriggerService {
 	}
 
 	@Override
-	public List<Trigger> getAllTrigger() {
-		return triggerRepository.getAllTrigger();
+	public List<Trigger> getAllTriggers() {
+		return triggerRepository.getAllTriggers();
 	}
 
 	@Override

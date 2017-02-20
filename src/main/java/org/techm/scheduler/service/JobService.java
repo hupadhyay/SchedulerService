@@ -6,13 +6,13 @@ import org.techm.scheduler.domain.Job;
 
 public interface JobService {
 	
-	Job createJob(Job Job);
+	Job createJob(Job job);
 	
 	Job updateJob(Job job);
 	
 	Job getJobById(String jobId);
 	
-	List<Job> getAllJob();
+	List<Job> getAllJobs();
 	
 	boolean deleteJob(String jobId);
 }

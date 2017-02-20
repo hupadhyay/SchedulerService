@@ -12,7 +12,7 @@ public interface TriggerRepository {
 
 	Trigger getTriggerById(String triggerId);
 
-	List<Trigger> getAllTrigger();
+	List<Trigger> getAllTriggers();
 
 	boolean deleteTrigger(String triggerId);
 

@@ -93,7 +93,7 @@ public class JobRepositoryImpl implements JobRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Job> getAllJob() {
+	public List<Job> getAllJobs() {
 		SessionFactory sessionFactory = null;
 		Session session = null;
 		List<Job> listOfJob = null;

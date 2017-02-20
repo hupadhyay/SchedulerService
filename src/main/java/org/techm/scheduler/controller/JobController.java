@@ -41,8 +41,8 @@ public class JobController {
 
 	@GET
 	@Produces(SchedulerConstants.JOB_MIME)
-	public List<Job> getJobAll() {
-		List<Job> listOfJobs = jobService.getAllJob();
+	public List<Job> getJobAlls() {
+		List<Job> listOfJobs = jobService.getAllJobs();
 		return listOfJobs;
 	}
 

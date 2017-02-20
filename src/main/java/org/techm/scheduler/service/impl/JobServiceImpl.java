@@ -34,8 +34,8 @@ public class JobServiceImpl implements JobService{
 	}
 
 	@Override
-	public List<Job> getAllJob() {
-		return jobRepository.getAllJob();
+	public List<Job> getAllJobs() {
+		return jobRepository.getAllJobs();
 	}
 
 	@Override

@@ -92,7 +92,7 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 	}
 
 	@Override
-	public List<Trigger> getAllTrigger() {
+	public List<Trigger> getAllTriggers() {
 		SessionFactory sessionFactory = null;
 		Session session = null;
 		List<Trigger> listOfTrigger = null;

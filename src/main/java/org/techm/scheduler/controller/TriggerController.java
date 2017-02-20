@@ -17,7 +17,7 @@ import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.service.TriggerService;
 import org.techm.scheduler.utils.SchedulerConstants;
 
-@Path("job")
+@Path("trigger")
 public class TriggerController {
 	private TriggerService triggerService;
 
@@ -27,35 +27,35 @@ public class TriggerController {
 	}
 
 	@POST
-	@Consumes(SchedulerConstants.JOB_MIME)
-	public Trigger createJob(Trigger trigger) {
+	@Consumes(SchedulerConstants.TRIGGER_MIME)
+	public Trigger createTrigger(Trigger trigger) {
 		return triggerService.createTrigger(trigger);
 	}
 
 	@PUT
-	@Consumes(SchedulerConstants.JOB_MIME)
-	public Trigger updateJob(Trigger trigger) {
+	@Consumes(SchedulerConstants.TRIGGER_MIME)
+	public Trigger updateTrigger(Trigger trigger) {
 		return triggerService.updateTrigger(trigger);
 	}
 
 	@GET
-	@Produces(SchedulerConstants.JOB_MIME)
-	public List<Trigger> getJobAll() {
-		List<Trigger> listOfTriggers = triggerService.getAllTrigger();
+	@Produces(SchedulerConstants.TRIGGER_MIME)
+	public List<Trigger> getAllTriggers() {
+		List<Trigger> listOfTriggers = triggerService.getAllTriggers();
 		return listOfTriggers;
 	}
 
 	@GET
 	@Path("{triggerId}")
-	@Produces(SchedulerConstants.JOB_MIME)
-	public Trigger getJobById(@NotNull @PathParam("triggerId") String triggerId) {
+	@Produces(SchedulerConstants.TRIGGER_MIME)
+	public Trigger getTriggerById(@NotNull @PathParam("triggerId") String triggerId) {
 		Trigger trigger = triggerService.getTriggerById(triggerId);
 		return trigger;
 	}
 
 	@DELETE
 	@Path("{triggerId}")
-	public boolean deleteJob(@NotNull @PathParam("triggerId") String triggerId) {
+	public boolean deleteTrigger(@NotNull @PathParam("triggerId") String triggerId) {
 		return triggerService.deleteTrigger(triggerId);
 	}
 

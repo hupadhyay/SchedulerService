@@ -12,7 +12,7 @@ public interface JobRepository {
 
 	Job getJobById(String jobId);
 
-	List<Job> getAllJob();
+	List<Job> getAllJobs();
 
 	boolean deleteJob(String jobId);
 

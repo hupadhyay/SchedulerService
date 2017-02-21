@@ -19,8 +19,6 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.ClientResponse;
 import org.glassfish.jersey.internal.util.Base64;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -62,7 +60,6 @@ public class QuartzJob implements org.quartz.Job {
 		// for send command only
 		String deviceId = jobAction.getDeviceId();
 		String commandId = jobAction.getCommandId();
-		String streamId = jobAction.getStreamId();
 		String message = jobAction.getMessage();
 		String messageId = UUID.randomUUID().toString();
 
@@ -78,29 +75,21 @@ public class QuartzJob implements org.quartz.Job {
 
 		try {
 			String acessToken = "Bearer " + getAuthToken();
-			//
-			// Client client = Client.create();
-			// WebResource webResource =
-			// client.resource("https://api.covapp.io/composer/v1/composer/command");
-			//
-			// ClientResponse response = webResource
-			// .header("Accept",
-			// "application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
-			// .header("Content-Type",
-			// "application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
-			// .header("Authorization", acessToken).post(ClientResponse.class,
-			// jsonObject.toString());
-			//
-			// String strResponse = response.getEntity(String.class);
-			// LOGGER.info("Platform Response: " + strResponse);
-
+			Client client = ClientBuilder.newClient();
+			WebTarget webTarget = client.target("https://apistg.np.covapp.io/composer/v1/composer/command");
+			
+			Response response = webTarget.request("application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
+					.header("Content-Type", "application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
+					.header("Authorization", acessToken).post(Entity.json(jsonObject.toString()));
+			
 			// remove the Older Job from Next Execution expression
-
 			String removedNextExecutionTime = removeOldNextExecutionTime(config, prefix);
-			ClientResponse response = null;
 			if (response.getStatus() == 200) {
 				LOGGER.info("Command has been send successfully!");
 
+				String strResponse = response.readEntity(String.class);
+				LOGGER.info("Platform Response: " + strResponse);
+				
 				// update the LastExecution time
 				updateLastExecutionTime(config, prefix, removedNextExecutionTime);
 
@@ -182,45 +171,42 @@ public class QuartzJob implements org.quartz.Job {
 	 * @return
 	 */
 	private String getSunriseSunsetTime(Date date) {
-		// SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		// String strdate = dateFormat.format(date);
-		// Calendar calendar = Calendar.getInstance();
-		// calendar.setTime(date);
-		// int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-		//
-		// try {
-		// Client client = Client.create();
-		// WebResource webResource = client
-		// .resource("http://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400&date="
-		// + strdate
-		// + "&formatted=0");
-		// ClientResponse response = webResource.header("Accept",
-		// "application/json").get(ClientResponse.class);
-		//
-		// JsonReader jsonReader = Json.createReader(new
-		// StringReader(response.getEntity(String.class)));
-		// JsonObject jsonResponse = jsonReader.readObject();
-		// jsonReader.close();
-		//
-		// if (jsonResponse.getString("status").equals("OK")) {
-		// JsonObject jsonResult = jsonResponse.getJsonObject("results");
-		// String result = null;
-		// if (hourOfDay < 12)
-		// result = jsonResult.getString("sunrise");
-		// else
-		// result = jsonResult.getString("sunset");
-		// result = result.substring((result.indexOf("T") + 1),
-		// result.indexOf("+"));
-		// return result;
-		// } else {
-		// return null;
-		// }
-		//
-		// } catch (ClientHandlerException | UniformInterfaceException exp) {
-		// LOGGER.error("Could not fetch data from site sunrise and sunset.
-		// Message:" + exp.getMessage());
-		return null;
-		// }
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String strdate = dateFormat.format(date);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
+		try {
+			Client client = ClientBuilder.newClient();
+			WebTarget webTarget = client.target("http://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400&date="
+					+ strdate + "&formatted=0");
+
+			Response response = webTarget.request(MediaType.APPLICATION_JSON).get();
+
+			if (response.getStatus() == 200) {
+				JsonReader jsonReader = Json.createReader(new StringReader(response.readEntity(String.class)));
+				JsonObject jsonResponse = jsonReader.readObject();
+				jsonReader.close();
+
+				if (jsonResponse.getString("status").equals("OK")) {
+					JsonObject jsonResult = jsonResponse.getJsonObject("results");
+					String result = null;
+					if (hourOfDay < 12)
+						result = jsonResult.getString("sunrise");
+					else
+						result = jsonResult.getString("sunset");
+					result = result.substring((result.indexOf("T") + 1), result.indexOf("+"));
+					return result;
+				} else {
+					return null;
+				}
+			}
+			return null;
+		} catch (Exception exp) {
+			LOGGER.error("Could not fetch data from site sunrise and sunset. Message:" + exp.getMessage());
+			return null;
+		}
 
 	}
 
@@ -264,6 +250,12 @@ public class QuartzJob implements org.quartz.Job {
 
 	}
 
+	/**
+	 * 
+	 * @param config
+	 * @param prefix
+	 * @param removedNextExecutionTime
+	 */
 	private void updateLastExecutionTime(Config config, String prefix, String removedNextExecutionTime) {
 		if (config.isDim()) {
 			config.setLastExecutionTime(removedNextExecutionTime);
@@ -287,22 +279,16 @@ public class QuartzJob implements org.quartz.Job {
 		try {
 			Client client = ClientBuilder.newClient();
 			WebTarget webTarget = client.target(reqeustURL);
-			
-			webTarget.request(SchedulerConstants.CONFIG_MIME).header("Content-Type", SchedulerConstants.CONFIG_MIME);
-			
-			ClientResponse response = webResource
-					.header("Accept", "application/vnd.com.covisint.platform.config.v1+json")
-					.header("x-realm", "IOT_SOL_QA").header("x-requestor", "HKU").header("x-requestor-app", "java")
-					.header("Content-Type", "application/vnd.com.covisint.platform.config.v1+json")
-					.put(ClientResponse.class, jsonObject.toString());
 
-			int status = response.getStatus();
+			Response response = webTarget.request(SchedulerConstants.CONFIG_MIME)
+					.header("Content-Type", SchedulerConstants.CONFIG_MIME)
+					.put(Entity.entity(config, SchedulerConstants.CONFIG_MIME));
 
-			if (status == 200) {
+			if (response.getStatus() == 200) {
 				LOGGER.info("Config object is udpated successfully");
 			}
 
-		} catch (ClientHandlerException | UniformInterfaceException exp) {
+		} catch (Exception exp) {
 			LOGGER.error("Could not update config object. Error Message:" + exp.getMessage());
 		}
 	}
@@ -458,7 +444,7 @@ public class QuartzJob implements org.quartz.Job {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		QuartzJob job = new QuartzJob();
+//		QuartzJob job = new QuartzJob();
 		// int gap = job.getDaysGap(3, new String[] { "TUE", "THU", "SAT" });
 		// System.out.println(gap);
 

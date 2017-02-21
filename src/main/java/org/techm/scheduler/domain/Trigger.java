@@ -22,7 +22,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="TRIGGER")
+@Table(name="TRIGGER_TBL")
 public class Trigger implements Serializable {
 
 	/** Serial version UID. */

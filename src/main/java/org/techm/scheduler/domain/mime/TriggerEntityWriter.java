@@ -17,7 +17,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.utils.SchedulerConstants;
 
@@ -27,7 +26,7 @@ public class TriggerEntityWriter implements MessageBodyWriter<Trigger> {
 	@Override
 	public boolean isWriteable(Class<?> typeClass, Type type, Annotation[] annotations, MediaType mediaType) {
 
-		return (type == Job.class && mediaType.toString().equals(SchedulerConstants.TRIGGER_MIME));
+		return (type == Trigger.class && mediaType.toString().equals(SchedulerConstants.TRIGGER_MIME));
 	}
 
 	@Override

@@ -26,3 +26,44 @@ Job Json:
 
 Trigger Json:
 
+{
+	"name": "config_Trigger",
+	"schedulerAttributes": [{
+		"name": "cronExpression",
+		"value": "20 40 12 * * ?"
+	}, {
+		"name": "timeZone",
+		"value": "Asia\/Kolkata"
+	}, {
+		"name": "timeUnit",
+		"value": "minutes"
+	}, {
+		"name": "initialDelay",
+		"value": "0"
+	}],
+	"triggerKey": {
+		"name": "Trigger_1487573964580",
+		"group": "ON_GROUP"
+	},
+	"schedulerType": "cronScheduler",
+	"creation": 1487573962852
+}
+
+
+Configuration JSON--->
+
+{
+	"phase": "All",
+	"date": "",
+	"controllerId": "2e80ebaf-5e4e-4965-85ee-2de37283086d",
+	"nextExecutionTime": "JOB_ON::20\/02\/2017::12:40:20|JOB_OFF::20\/02\/2017::12:45:20",
+	"triggerId": "1be7f0b0-88df-427c-bcd9-24134b24c287,ac7bf05f-b73c-4f47-bdf8-9e9d51290818",
+	"cityId": "bfa481f2-bd17-4c8a-b77d-33f33d4af5bc",
+	"configType": "daily",
+	"configState": "manual",
+	"jobId": "JOB_ON_2e80ebaf-5e4e-4965-85ee-2de37283086d,JOB_OFF_2e80ebaf-5e4e-4965-85ee-2de37283086d",
+	"onTime": "12:40:20",
+	"offTime": "12:45:20",
+	"localityId": "2fbeaf86-f2e2-4a3d-a08b-924d69b19e93"
+}
+

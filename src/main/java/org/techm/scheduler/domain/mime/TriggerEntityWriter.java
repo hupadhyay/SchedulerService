@@ -25,7 +25,6 @@ public class TriggerEntityWriter implements MessageBodyWriter<Trigger> {
 
 	@Override
 	public boolean isWriteable(Class<?> typeClass, Type type, Annotation[] annotations, MediaType mediaType) {
-
 		return (type == Trigger.class && mediaType.toString().equals(SchedulerConstants.TRIGGER_MIME));
 	}
 
@@ -70,7 +69,7 @@ public class TriggerEntityWriter implements MessageBodyWriter<Trigger> {
 			for (String schedulerKey : mapAttributes.keySet()) {
 				jsonAttribute = Json.createObjectBuilder();
 				jsonAttribute.add(SchedulerConstants.NAME_PROP, schedulerKey);
-				jsonAttribute.add(SchedulerConstants.NAME_PROP, mapAttributes.get(schedulerKey));
+				jsonAttribute.add(SchedulerConstants.VALUE_PROP, mapAttributes.get(schedulerKey));
 				triggeAttributeBuilder.add(jsonAttribute);
 			}
 

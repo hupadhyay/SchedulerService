@@ -17,8 +17,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import org.techm.scheduler.domain.ActionType;
-import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.SchedulerKey;
 import org.techm.scheduler.domain.SchedulerType;
 import org.techm.scheduler.domain.Trigger;

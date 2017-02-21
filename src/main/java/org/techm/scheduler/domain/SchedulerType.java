@@ -1,7 +1,5 @@
 package org.techm.scheduler.domain;
 
-import javax.persistence.Embeddable;
-
 /**
  * Enum for scheduler type of trigger.
  *

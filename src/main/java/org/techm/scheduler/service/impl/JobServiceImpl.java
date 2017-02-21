@@ -3,18 +3,17 @@ package org.techm.scheduler.service.impl;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.respository.JobRepository;
 import org.techm.scheduler.service.JobService;
 
-public class JobServiceImpl implements JobService{
-	
+public class JobServiceImpl implements JobService {
+
 	private JobRepository jobRepository;
-	
+
 	@Inject
-	public JobServiceImpl(JobRepository jobRepository){
+	public JobServiceImpl(JobRepository jobRepository) {
 		this.jobRepository = jobRepository;
 	}
 

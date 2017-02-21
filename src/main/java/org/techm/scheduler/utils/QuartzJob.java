@@ -284,11 +284,12 @@ public class QuartzJob implements org.quartz.Job {
 	 * @param config
 	 */
 	private void updateConfigObject(Config config) {
-
-		JsonObject jsonObject = configWriter.writeResource(MediaType.PLAIN_TEXT_UTF_8, config).build();
 		try {
-			Client client = Client.create();
-			WebResource webResource = client.resource(reqeustURL + config.getId());
+			Client client = ClientBuilder.newClient();
+			WebTarget webTarget = client.target(reqeustURL);
+			
+			webTarget.request(SchedulerConstants.CONFIG_MIME).header("Content-Type", SchedulerConstants.CONFIG_MIME);
+			
 			ClientResponse response = webResource
 					.header("Accept", "application/vnd.com.covisint.platform.config.v1+json")
 					.header("x-realm", "IOT_SOL_QA").header("x-requestor", "HKU").header("x-requestor-app", "java")
@@ -313,23 +314,20 @@ public class QuartzJob implements org.quartz.Job {
 	 * @return
 	 */
 	private Config getConfigObject(String configId) {
-		String strResponse = null;
 		Config config = null;
 		try {
-			Client client = Client.create();
-			WebResource webResource = client.resource(reqeustURL + configId);
-			ClientResponse response = webResource
-					.header("Accept", "application/vnd.com.covisint.platform.config.v1+json")
-					.header("x-realm", "IOT_SOL_QA").header("x-requestor", "HKU").header("x-requestor-app", "java")
-					.get(ClientResponse.class);
+			Client client = ClientBuilder.newClient();
+			WebTarget webTarget = client.target(reqeustURL + configId);
 
-			strResponse = response.getEntity(String.class);
-			JsonReader jsonReader = Json.createReader(new StringReader(strResponse));
-			JsonObject object = jsonReader.readObject();
-			jsonReader.close();
-			config = configReader.readResource(MediaType.PLAIN_TEXT_UTF_8, object);
+			Response response = webTarget.request(SchedulerConstants.CONFIG_MIME).get();
 
-		} catch (ClientHandlerException | UniformInterfaceException exp) {
+			if (response.getStatus() == 200) {
+				config = response.readEntity(Config.class);
+			} else {
+				LOGGER.error("Not able to get config object from id.");
+				// throw exception.
+			}
+		} catch (Exception exp) {
 			LOGGER.error("Could not retrive config object from id. Error Message:" + exp.getMessage());
 		}
 		return config;

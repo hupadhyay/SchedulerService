@@ -1,5 +1,16 @@
 package org.techm.scheduler.service;
 
-public interface SchedulerService {
+import org.techm.scheduler.domain.Job;
+import org.techm.scheduler.domain.Trigger;
 
+/**
+ * 
+ * @author himanshu
+ *
+ */
+public interface SchedulerService {
+	
+	boolean scheduleService(Job job, Trigger trigger, String configId, String urlAdd);
+	
+	boolean removeService(Trigger trigger); 
 }

@@ -13,6 +13,7 @@
 		<jersey-api.version>2.0.1</jersey-api.version>
 		<jersey-container.version>2.25.1</jersey-container.version>
 		<json.version>1.0.4</json.version>
+		<quartz.version>2.2.1</quartz.version>
 		<json.api.version>1.0</json.api.version>
 		<hibernate.version>5.2.5.Final</hibernate.version>
 		<mysql.version>5.1.27</mysql.version>
@@ -78,6 +79,18 @@
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- Dependency for quartz scheduler -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
 
 		<!-- For ORM Tool (Hibernate) -->
 		<dependency>
@@ -103,12 +116,12 @@
 			<version>${mysql.version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+		<!-- https://mvnrepository.com/artifact/com.google.inject/guice 
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>${juice.version}</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- Test API declaration. -->
 		<dependency>

@@ -112,7 +112,7 @@ public class ConfigEntityReader implements MessageBodyReader<Config>{
 		
 		if(jobObject.containsKey(SchedulerConstants.CONFIG_TYPE) && !(jobObject.isNull(SchedulerConstants.CONFIG_TYPE))){
 			String configType = jobObject.getString(SchedulerConstants.CONFIG_TYPE);
-			config.setPhase(configType);
+			config.setConfigType(configType);
 		}
 		
 		if(jobObject.containsKey(SchedulerConstants.NEXT_EXECUTION) && !(jobObject.isNull(SchedulerConstants.NEXT_EXECUTION))){

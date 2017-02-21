@@ -14,9 +14,11 @@ import org.techm.scheduler.respository.impl.JobRepositoryImpl;
 import org.techm.scheduler.respository.impl.TriggerRepositoryImpl;
 import org.techm.scheduler.service.ConfigService;
 import org.techm.scheduler.service.JobService;
+import org.techm.scheduler.service.SchedulerService;
 import org.techm.scheduler.service.TriggerService;
 import org.techm.scheduler.service.impl.ConfigServiceImpl;
 import org.techm.scheduler.service.impl.JobServiceImpl;
+import org.techm.scheduler.service.impl.SchedulerServiceImpl;
 import org.techm.scheduler.service.impl.TriggerServiceImpl;
 
 /**
@@ -45,6 +47,7 @@ public class WebApplication extends ResourceConfig {
 				bind(TriggerRepositoryImpl.class).to(TriggerRepository.class);
 				bind(ConfigServiceImpl.class).to(ConfigService.class);
 				bind(ConfigRepositoryImpl.class).to(ConfigRepository.class);
+				bind(SchedulerServiceImpl.class).to(SchedulerService.class);
 			}
 		});
 	}

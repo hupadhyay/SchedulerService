@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.techm.scheduler.domain.Config;
+import org.techm.scheduler.exception.DaoException;
 import org.techm.scheduler.respository.ConfigRepository;
 import org.techm.scheduler.utils.HibernateUtils;
 
@@ -33,6 +34,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
+			throw new DaoException("Could not save Config due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();
@@ -60,6 +62,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
+			throw new DaoException("Could not update Config due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();
@@ -85,6 +88,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
+			throw new DaoException("Could not retrive Config due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();
@@ -110,6 +114,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
+			throw new DaoException("Could not retrive all Configs due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();
@@ -138,7 +143,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
-			bool = false;
+			throw new DaoException("Could not delete Config due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();

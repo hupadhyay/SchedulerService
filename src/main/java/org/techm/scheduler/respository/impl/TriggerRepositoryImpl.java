@@ -6,10 +6,11 @@ import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.techm.scheduler.domain.Trigger;
+import org.techm.scheduler.exception.DaoException;
 import org.techm.scheduler.respository.TriggerRepository;
 import org.techm.scheduler.utils.HibernateUtils;
 
-public class TriggerRepositoryImpl implements TriggerRepository{
+public class TriggerRepositoryImpl implements TriggerRepository {
 
 	@Override
 	public Trigger createTrigger(Trigger trigger) {
@@ -28,11 +29,12 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 
 			String strId = (String) session.save(trigger);
 			savedTrigger = session.get(Trigger.class, strId);
-			
+
 			session.getTransaction().commit();
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
+			throw new DaoException("Could not save trigger due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();
@@ -60,6 +62,7 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
+			throw new DaoException("Could not update trigger due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();
@@ -78,13 +81,14 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 			session = sessionFactory.openSession();
 
 			session.beginTransaction();
-			
+
 			trigger = session.get(Trigger.class, triggerId);
 
 			session.getTransaction().commit();
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
+			throw new DaoException("Could not retrive trigger due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();
@@ -98,20 +102,21 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 		SessionFactory sessionFactory = null;
 		Session session = null;
 		List<Trigger> listOfTrigger = null;
-		try{
+		try {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
-			
+
 			session.beginTransaction();
-			
+
 			listOfTrigger = session.createQuery("from Trigger", Trigger.class).getResultList();
-			
+
 			session.getTransaction().commit();
-			
-		}catch(Exception exp){
+
+		} catch (Exception exp) {
 			exp.printStackTrace();
-		}finally{
-			if(session != null){
+			throw new DaoException("Could not get all triggers due to internal issue.", exp.getCause());
+		} finally {
+			if (session != null) {
 				session.close();
 			}
 		}
@@ -127,9 +132,9 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 		try {
 			sessionFactory = HibernateUtils.getSessionFactory();
 			session = sessionFactory.openSession();
-			
+
 			session.beginTransaction();
-			
+
 			trigger = session.get(Trigger.class, triggerId);
 			session.delete(trigger);
 
@@ -138,7 +143,7 @@ public class TriggerRepositoryImpl implements TriggerRepository{
 
 		} catch (Exception exp) {
 			exp.printStackTrace();
-			bool = false;
+			throw new DaoException("Could not delete trigger due to internal issue.", exp.getCause());
 		} finally {
 			if (session != null) {
 				session.close();

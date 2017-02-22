@@ -41,8 +41,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 			return true;
 		} catch (SchedulerException ex) {
 			ex.printStackTrace();
+			String expMsg = "Could not schedule job with id: "+ job.getId() + " against trigger with Id: "+ trigger.getId();
+			throw new org.techm.scheduler.exception.SchedulerException(expMsg, ex.getCause());
 		}
-		return false;
 	}
 
 	/**
@@ -60,7 +61,8 @@ public class SchedulerServiceImpl implements SchedulerService {
 			return true;
 		} catch (SchedulerException ex) {
 			ex.printStackTrace();
-			return false;
+			String expMsg = "Could not remove scheduler associated with trigger with id: "+ trigger.getId();
+			throw new org.techm.scheduler.exception.SchedulerException(expMsg, ex.getCause());
 		}
 	}
 

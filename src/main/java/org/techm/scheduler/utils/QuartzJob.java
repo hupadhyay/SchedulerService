@@ -1,6 +1,7 @@
 package org.techm.scheduler.utils;
 
 import java.io.StringReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,15 +29,9 @@ import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.JobAction;
-import org.techm.scheduler.domain.mime.ConfigEntityReader;
-import org.techm.scheduler.domain.mime.ConfigEntityWriter;
 import org.techm.scheduler.exception.SchedulerException;
 
 public class QuartzJob implements org.quartz.Job {
-
-	ConfigEntityReader configReader = new ConfigEntityReader();
-
-	ConfigEntityWriter configWriter = new ConfigEntityWriter();
 
 	String reqeustURL = null;
 
@@ -44,6 +39,9 @@ public class QuartzJob implements org.quartz.Job {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuartzJob.class);
 
+	/**
+	 * When the time is expire, Quartz scheduler, will execute this method.
+	 */
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
@@ -78,11 +76,11 @@ public class QuartzJob implements org.quartz.Job {
 			String acessToken = "Bearer " + getAuthToken();
 			Client client = ClientBuilder.newClient();
 			WebTarget webTarget = client.target("https://apistg.np.covapp.io/composer/v1/composer/command");
-			
+
 			Response response = webTarget.request("application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
 					.header("Content-Type", "application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
 					.header("Authorization", acessToken).post(Entity.json(jsonObject.toString()));
-			
+
 			// remove the Older Job from Next Execution expression
 			String removedNextExecutionTime = removeOldNextExecutionTime(config, prefix);
 			if (response.getStatus() == 200) {
@@ -90,7 +88,7 @@ public class QuartzJob implements org.quartz.Job {
 
 				String strResponse = response.readEntity(String.class);
 				LOGGER.info("Platform Response: " + strResponse);
-				
+
 				// update the LastExecution time
 				updateLastExecutionTime(config, prefix, removedNextExecutionTime);
 
@@ -164,10 +162,13 @@ public class QuartzJob implements org.quartz.Job {
 			}
 		} catch (Exception exp) {
 			LOGGER.info("Exception occurs due to some internal error. Message: " + exp.getMessage());
+			throw new SchedulerException("Could not execute scheduled job due to some internal error", exp.getCause());
 		}
 	}
 
 	/**
+	 * Get the time of sunrise and sunset from
+	 * <site>http://api.sunrise-sunset.org</site>.
 	 * 
 	 * @return
 	 */
@@ -211,6 +212,13 @@ public class QuartzJob implements org.quartz.Job {
 
 	}
 
+	/**
+	 * Remove the old next execution time.
+	 * 
+	 * @param config
+	 * @param prefix
+	 * @return
+	 */
 	private String removeOldNextExecutionTime(Config config, String prefix) {
 		// remove older NextExecutionTime
 		String nextExecution = config.getNextExecutionTime();
@@ -317,6 +325,7 @@ public class QuartzJob implements org.quartz.Job {
 			}
 		} catch (Exception exp) {
 			LOGGER.error("Could not retrive config object from id. Error Message:" + exp.getMessage());
+			throw new SchedulerException("Unable to get Config object", exp.getCause());
 		}
 		return config;
 	}
@@ -420,7 +429,7 @@ public class QuartzJob implements org.quartz.Job {
 				throw new Exception(response.getStatus() + ", Details: " + response.readEntity(String.class));
 			}
 		} catch (Exception exp) {
-			throw new Exception("Unable to get token. Message: " + exp.getMessage());
+			throw new SchedulerException("Unable to get token. Message: " + exp.getMessage());
 		}
 		return token;
 	}
@@ -428,7 +437,6 @@ public class QuartzJob implements org.quartz.Job {
 	/**
 	 * 
 	 * @param entity
-	 * @throws ParseException
 	 * @return5
 	 */
 	private static String fetchToken(String entity) {
@@ -446,7 +454,7 @@ public class QuartzJob implements org.quartz.Job {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-//		QuartzJob job = new QuartzJob();
+		// QuartzJob job = new QuartzJob();
 		// int gap = job.getDaysGap(3, new String[] { "TUE", "THU", "SAT" });
 		// System.out.println(gap);
 

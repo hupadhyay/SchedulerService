@@ -39,7 +39,7 @@ public class ScheduleController {
 		Job job = jobService.getJobById(jobId);
 		Trigger trigger = triggerService.getTriggerById(triggerId);
 		String urlAdd = request.getRemoteAddr() + "/config";
-		
+
 		boolean bool = schedulerService.scheduleService(job, trigger, configId, urlAdd);
 
 		if (bool) {
@@ -82,6 +82,7 @@ public class ScheduleController {
 		} catch (SchedulerException exp) {
 			exp.printStackTrace();
 			response = "Scheduler could not be shutdown due to some internal error.";
+			throw new org.techm.scheduler.exception.SchedulerException(response, exp.getCause());
 		}
 		return response;
 	}
@@ -105,6 +106,7 @@ public class ScheduleController {
 		} catch (SchedulerException exp) {
 			exp.printStackTrace();
 			response = "Scheduler could not be started due to some internal error.";
+			throw new org.techm.scheduler.exception.SchedulerException(response, exp.getCause());
 		}
 		return response;
 	}
@@ -117,6 +119,7 @@ public class ScheduleController {
 	@GET
 	@Path("clean")
 	public String cleanAllJob() {
+		String response = null;
 		try {
 			Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 			if (scheduler.isStarted()) {
@@ -126,12 +129,13 @@ public class ScheduleController {
 			} else {
 				scheduler.clear();
 			}
-			return "All jobs and triggers has been deleted from scheduler repository.";
+			response = "All jobs and triggers has been deleted from scheduler repository.";
 		} catch (SchedulerException exp) {
 			exp.printStackTrace();
-			return "Jobs and Triggers could not be clened due to some internal error.";
+			response = "Jobs and Triggers could not be clened due to some internal error.";
+			throw new org.techm.scheduler.exception.SchedulerException(response, exp.getCause());
 		}
-
+		return response;
 	}
 
 	/**
@@ -146,6 +150,7 @@ public class ScheduleController {
 			scheduler.startDelayed(2);
 		} catch (SchedulerException exp) {
 			exp.printStackTrace();
+			throw new org.techm.scheduler.exception.SchedulerException("Could not start Scheduler.", exp.getCause());
 		}
 	}
 

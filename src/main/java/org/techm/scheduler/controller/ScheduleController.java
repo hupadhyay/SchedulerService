@@ -32,34 +32,38 @@ public class ScheduleController {
 
 	@POST
 	@Path("create/job/{jobId}/trigger/{triggerId}/config/{configId}")
-	public String createScheduler(@NotNull @PathParam("jobId") String jobId,
+	public boolean createScheduler(@NotNull @PathParam("jobId") String jobId,
 			@NotNull @PathParam("triggerId") String triggerId, @NotNull @PathParam("configId") String configId,
 			@Context HttpServletRequest request) {
 		Job job = jobService.getJobById(jobId);
 		Trigger trigger = triggerService.getTriggerById(triggerId);
-		String urlAdd = request.getRemoteAddr() + "/config";
+		int index = request.getRequestURI().indexOf("schedule");
+		
+		String urlAdd = request.getRequestURI().substring(0, index)+ "config";
 
 		boolean bool = schedulerService.scheduleService(job, trigger, configId, urlAdd);
 
 		if (bool) {
-			return "Job with id: " + jobId + " is successfully scheduled against trigger with triggerId: " + triggerId;
+			System.out.println("Job with id: " + jobId + " is successfully scheduled against trigger with triggerId: " + triggerId);
 		} else {
-			return "Job could not scheduled.";
+			System.out.println("Job could not scheduled.");
 		}
+		return bool;
 	}
 
 	@POST
 	@Path("remove/trigger/{triggerId}")
-	public String removeScheduler(@NotNull @PathParam("triggerId") String triggerId) {
+	public boolean removeScheduler(@NotNull @PathParam("triggerId") String triggerId) {
 		Trigger trigger = triggerService.getTriggerById(triggerId);
 
 		boolean bool = schedulerService.removeService(trigger);
 
 		if (bool) {
-			return "Requested scheduling associated with trigger with id: " + triggerId + " has been cancelled.";
+			System.out.println("Requested scheduling associated with trigger with id: " + triggerId + " has been cancelled.");
 		} else {
-			return "Scheduler could not be cancelled due to some internal error.";
+			System.out.println("Scheduler could not be cancelled due to some internal error.");
 		}
+		return bool;
 	}
 
 	/**

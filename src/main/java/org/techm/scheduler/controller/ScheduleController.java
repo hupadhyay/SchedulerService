@@ -1,6 +1,5 @@
 package org.techm.scheduler.controller;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
@@ -137,21 +136,4 @@ public class ScheduleController {
 		}
 		return response;
 	}
-
-	/**
-	 * 
-	 */
-	@PostConstruct
-	public void initializedScheduler() {
-		try {
-			Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-
-			// Start the scheduler after two second of loading it.
-			scheduler.startDelayed(2);
-		} catch (SchedulerException exp) {
-			exp.printStackTrace();
-			throw new org.techm.scheduler.exception.SchedulerException("Could not start Scheduler.", exp.getCause());
-		}
-	}
-
 }

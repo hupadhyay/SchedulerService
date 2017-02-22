@@ -115,14 +115,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.google.inject/guice 
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>${juice.version}</version>
-		</dependency> -->
-
+		
 		<!-- Test API declaration. -->
 		<dependency>
 			<groupId>junit</groupId>

@@ -42,4 +42,9 @@ public class ConfigServiceImpl implements ConfigService {
 		return configRepository.deleteConfig(configId);
 	}
 
+	@Override
+	public List<Config> getConfigsForStatus(String dimOrOnOff) {
+		return configRepository.getConfigsForStatus(dimOrOnOff);
+	}
+
 }

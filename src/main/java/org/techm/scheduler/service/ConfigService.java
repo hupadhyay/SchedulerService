@@ -14,5 +14,7 @@ public interface ConfigService {
 	
 	List<Config> getAllConfigs();
 	
+	List<Config> getConfigsForStatus(String dimOrOnOff);
+	
 	boolean deleteConfig(String configId);
 }

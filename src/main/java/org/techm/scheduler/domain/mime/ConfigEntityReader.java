@@ -96,8 +96,8 @@ public class ConfigEntityReader implements MessageBodyReader<Config>{
 		}
 		
 		if(jobObject.containsKey(SchedulerConstants.IS_DIM) && !(jobObject.isNull(SchedulerConstants.IS_DIM))){
-			String isDim = jobObject.getString(SchedulerConstants.IS_DIM);
-			config.setDim(Boolean.parseBoolean(isDim));
+			boolean bool = jobObject.getBoolean(SchedulerConstants.IS_DIM);
+			config.setDim(bool);
 		}
 		
 		if(jobObject.containsKey(SchedulerConstants.INTENSITY) && !(jobObject.isNull(SchedulerConstants.INTENSITY))){

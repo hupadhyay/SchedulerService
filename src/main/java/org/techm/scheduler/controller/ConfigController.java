@@ -53,6 +53,14 @@ public class ConfigController {
 		Config config = configService.getConfigById(configId);
 		return config;
 	}
+	
+	@GET
+	@Path("list/{dimOrOnOff}")
+	@Produces(SchedulerConstants.CONFIG_MIME)
+	public List<Config> getConfigsForStatus(@NotNull @PathParam("dimOrOnOff") String dimOrOnOff) {
+		List<Config> listConfig = configService.getConfigsForStatus(dimOrOnOff);
+		return listConfig;
+	}
 
 	@DELETE
 	@Path("{configId}")

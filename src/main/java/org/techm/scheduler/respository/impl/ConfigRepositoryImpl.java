@@ -152,4 +152,35 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 		return bool;
 	}
 
+	@Override
+	public List<Config> getConfigsForStatus(String dimOrOnOff) {
+		SessionFactory sessionFactory = null;
+		Session session = null;
+		List<Config> listOfConfigs = null;
+		try {
+			sessionFactory = HibernateUtils.getSessionFactory();
+			session = sessionFactory.openSession();
+
+			session.beginTransaction();
+
+			boolean bool = false;
+			if (dimOrOnOff.equalsIgnoreCase("dim")) {
+				bool = true;
+			}
+
+			listOfConfigs = session.createQuery("from Config where isDim = " + bool, Config.class).getResultList();
+
+			session.getTransaction().commit();
+
+		} catch (Exception exp) {
+			exp.printStackTrace();
+			throw new DaoException("Could not retrive all Configs due to internal issue.", exp.getCause());
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return listOfConfigs;
+	}
+
 }

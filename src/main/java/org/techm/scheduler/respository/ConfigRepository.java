@@ -13,6 +13,8 @@ public interface ConfigRepository {
 	Config getConfigById(String configId);
 
 	List<Config> getAllConfigs();
+	
+	List<Config> getConfigsForStatus(String dimOrOnOff);
 
 	boolean deleteConfig(String configId);
 

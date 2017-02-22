@@ -30,6 +30,7 @@ import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.JobAction;
 import org.techm.scheduler.domain.mime.ConfigEntityReader;
 import org.techm.scheduler.domain.mime.ConfigEntityWriter;
+import org.techm.scheduler.exception.SchedulerException;
 
 public class QuartzJob implements org.quartz.Job {
 
@@ -205,7 +206,7 @@ public class QuartzJob implements org.quartz.Job {
 			return null;
 		} catch (Exception exp) {
 			LOGGER.error("Could not fetch data from site sunrise and sunset. Message:" + exp.getMessage());
-			return null;
+			throw new SchedulerException("Unable to get Sunrise/Sunset for Date: " + date);
 		}
 
 	}
@@ -290,6 +291,7 @@ public class QuartzJob implements org.quartz.Job {
 
 		} catch (Exception exp) {
 			LOGGER.error("Could not update config object. Error Message:" + exp.getMessage());
+			throw new SchedulerException("Unable to update Config object", exp.getCause());
 		}
 	}
 

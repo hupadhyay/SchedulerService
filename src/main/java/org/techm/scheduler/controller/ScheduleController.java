@@ -7,13 +7,17 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
+import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.Trigger;
+import org.techm.scheduler.service.ConfigService;
 import org.techm.scheduler.service.JobService;
 import org.techm.scheduler.service.SchedulerService;
 import org.techm.scheduler.service.TriggerService;
@@ -26,22 +30,28 @@ public class ScheduleController {
 
 	@Inject
 	private TriggerService triggerService;
+	
+	@Inject
+	private ConfigService configService;
 
 	@Inject
 	private SchedulerService schedulerService;
 
 	@POST
 	@Path("create/job/{jobId}/trigger/{triggerId}/config/{configId}")
+	@Produces(MediaType.TEXT_PLAIN)
 	public boolean createScheduler(@NotNull @PathParam("jobId") String jobId,
 			@NotNull @PathParam("triggerId") String triggerId, @NotNull @PathParam("configId") String configId,
 			@Context HttpServletRequest request) {
 		Job job = jobService.getJobById(jobId);
 		Trigger trigger = triggerService.getTriggerById(triggerId);
-		int index = request.getRequestURI().indexOf("schedule");
+		Config config = configService.getConfigById(configId);
 		
-		String urlAdd = request.getRequestURI().substring(0, index)+ "config";
+		int index = request.getRequestURL().indexOf("schedule");
+		
+		String urlAdd = request.getRequestURL().substring(0, index)+ "config";
 
-		boolean bool = schedulerService.scheduleService(job, trigger, configId, urlAdd);
+		boolean bool = schedulerService.scheduleService(job, trigger, config, urlAdd);
 
 		if (bool) {
 			System.out.println("Job with id: " + jobId + " is successfully scheduled against trigger with triggerId: " + triggerId);
@@ -53,6 +63,7 @@ public class ScheduleController {
 
 	@POST
 	@Path("remove/trigger/{triggerId}")
+	@Produces(MediaType.TEXT_PLAIN)
 	public boolean removeScheduler(@NotNull @PathParam("triggerId") String triggerId) {
 		Trigger trigger = triggerService.getTriggerById(triggerId);
 

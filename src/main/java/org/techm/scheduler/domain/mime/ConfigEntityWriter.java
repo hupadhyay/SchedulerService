@@ -39,7 +39,20 @@ public class ConfigEntityWriter implements MessageBodyWriter<Config> {
 			throws IOException, WebApplicationException {
 
 		JsonWriter jsonWriter = Json.createWriter(entityWriter);
+		
+		JsonObject jsonObject  = createJsonFromObject(config);
 
+		jsonWriter.writeObject(jsonObject);
+
+		jsonWriter.close();
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public JsonObject createJsonFromObject(Config config) {
 		JsonObjectBuilder configBuilder = Json.createObjectBuilder();
 
 		if (config.getId() != null) {
@@ -111,13 +124,9 @@ public class ConfigEntityWriter implements MessageBodyWriter<Config> {
 		if (config.getLastExecutionTime() != null) {
 			configBuilder.add(SchedulerConstants.LAST_EXECUTION, config.getLastExecutionTime());
 		}
-		
-		JsonObject jsonObject = configBuilder.build();
-		
-		jsonWriter.writeObject(jsonObject);
-		
-		jsonWriter.close();
 
+		JsonObject jsonObject = configBuilder.build();
+		return jsonObject;
 	}
 
 }

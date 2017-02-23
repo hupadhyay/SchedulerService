@@ -12,6 +12,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.service.TriggerService;
@@ -62,6 +63,7 @@ public class TriggerController {
 
 	@DELETE
 	@Path("{triggerId}")
+	@Produces(MediaType.TEXT_PLAIN)
 	public boolean deleteTrigger(@NotNull @PathParam("triggerId") String triggerId) {
 		return triggerService.deleteTrigger(triggerId);
 	}

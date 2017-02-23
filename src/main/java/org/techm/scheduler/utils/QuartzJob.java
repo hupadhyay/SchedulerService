@@ -1,6 +1,7 @@
 package org.techm.scheduler.utils;
 
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.JobAction;
+import org.techm.scheduler.domain.mime.ConfigEntityWriter;
 import org.techm.scheduler.exception.SchedulerException;
 
 public class QuartzJob implements org.quartz.Job {
@@ -36,6 +38,8 @@ public class QuartzJob implements org.quartz.Job {
 	String reqeustURL = null;
 
 	String[] weekdays = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
+	
+	ConfigEntityWriter configwriter = new ConfigEntityWriter();
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuartzJob.class);
 
@@ -46,10 +50,9 @@ public class QuartzJob implements org.quartz.Job {
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
 		Job job = (Job) jobDataMap.get("job");
-		String configId = (String) jobDataMap.get("configId");
+		Config config = (Config) jobDataMap.get("config");
 		reqeustURL = (String) jobDataMap.get("url");
 		JobAction jobAction = job.getJobAction();
-		Config config = getConfigObject(configId);
 		LOGGER.info("#############: Message: " + jobAction.getMessage());
 
 		String jobId = job.getId();
@@ -79,7 +82,8 @@ public class QuartzJob implements org.quartz.Job {
 
 			Response response = webTarget.request("application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
 					.header("Content-Type", "application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
-					.header("Authorization", acessToken).post(Entity.json(jsonObject.toString()));
+					.header("Authorization", acessToken).post(Entity.entity(jsonObject.toString(),
+							"application/vnd.com.covisint.platform.messaging.sendCommand.v1+json"));
 
 			// remove the Older Job from Next Execution expression
 			String removedNextExecutionTime = removeOldNextExecutionTime(config, prefix);
@@ -286,13 +290,14 @@ public class QuartzJob implements org.quartz.Job {
 	 */
 	private void updateConfigObject(Config config) {
 		try {
+			JsonObject object = configwriter.createJsonFromObject(config);
 			Client client = ClientBuilder.newClient();
 			WebTarget webTarget = client.target(reqeustURL);
 
 			Response response = webTarget.request(SchedulerConstants.CONFIG_MIME)
 					.header("Content-Type", SchedulerConstants.CONFIG_MIME)
-					.put(Entity.entity(config, SchedulerConstants.CONFIG_MIME));
-
+					.put(Entity.entity(object.toString(), SchedulerConstants.CONFIG_MIME));
+			
 			if (response.getStatus() == 200) {
 				LOGGER.info("Config object is udpated successfully");
 			}
@@ -301,33 +306,6 @@ public class QuartzJob implements org.quartz.Job {
 			LOGGER.error("Could not update config object. Error Message:" + exp.getMessage());
 			throw new SchedulerException("Unable to update Config object", exp.getCause());
 		}
-	}
-
-	/**
-	 * Config Object by id.
-	 * 
-	 * @param configId
-	 * @return
-	 */
-	private Config getConfigObject(String configId) {
-		Config config = null;
-		try {
-			Client client = ClientBuilder.newClient();
-			WebTarget webTarget = client.target(reqeustURL + configId);
-
-			Response response = webTarget.request(SchedulerConstants.CONFIG_MIME).get();
-
-			if (response.getStatus() == 200) {
-				config = response.readEntity(Config.class);
-			} else {
-				LOGGER.error("Not able to get config object from id.");
-				// throw exception.
-			}
-		} catch (Exception exp) {
-			LOGGER.error("Could not retrive config object from id. Error Message:" + exp.getMessage());
-			throw new SchedulerException("Unable to get Config object", exp.getCause());
-		}
-		return config;
 	}
 
 	/**
@@ -454,7 +432,7 @@ public class QuartzJob implements org.quartz.Job {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		// QuartzJob job = new QuartzJob();
+		// QuartzJob qjob = new QuartzJob();
 		// int gap = job.getDaysGap(3, new String[] { "TUE", "THU", "SAT" });
 		// System.out.println(gap);
 

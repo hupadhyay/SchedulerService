@@ -1,6 +1,7 @@
 package org.techm.scheduler.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -19,6 +20,11 @@ public class ConfigServiceImpl implements ConfigService {
 	
 	@Override
 	public Config createConfig(Config config) {
+		if(config.isDim()){
+			config.setId(UUID.randomUUID().toString());
+		} else {
+			config.setId(config.getControllerId()+"onoff");
+		}
 		return configRepository.createConfig(config);
 	}
 

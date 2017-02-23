@@ -13,6 +13,7 @@ import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
+import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.SchedulerKey;
 import org.techm.scheduler.domain.Trigger;
@@ -25,14 +26,14 @@ public class SchedulerServiceImpl implements SchedulerService {
 	 * 
 	 */
 	@Override
-	public boolean scheduleService(Job job, Trigger trigger, String configId, String strUrl) {
+	public boolean scheduleService(Job job, Trigger trigger, Config config, String strUrl) {
 		org.quartz.Trigger qrtzTrigger = createQuartzTrigger(trigger);
 
 		SchedulerKey jobSchedulerKey = job.getSchedulerKey();
 		JobDetail jobDetail = JobBuilder.newJob(QuartzJob.class)
 				.withIdentity(jobSchedulerKey.getName(), jobSchedulerKey.getGroup()).build();
 		jobDetail.getJobDataMap().put("job", job);
-		jobDetail.getJobDataMap().put("configId", configId);
+		jobDetail.getJobDataMap().put("config", config);
 		jobDetail.getJobDataMap().put("url", strUrl);
 
 		try {

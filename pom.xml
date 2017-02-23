@@ -20,6 +20,7 @@
 		<servlet.version>3.1.0</servlet.version>
 		<juice.version>3.0</juice.version>
 		<junit.version>4.12</junit.version>
+		<logging.version>1.7.21</logging.version>
 	</properties>
 
 	<dependencies>
@@ -79,7 +80,7 @@
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Dependency for quartz scheduler -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -115,7 +116,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
 		</dependency>
-		
+
 		<!-- Test API declaration. -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -123,6 +124,20 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Logging API declaration -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${logging.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${logging.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<!-- Build specific Settings -->

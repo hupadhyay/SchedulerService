@@ -17,6 +17,13 @@ import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.service.TriggerService;
 import org.techm.scheduler.utils.SchedulerConstants;
 
+/**
+ * This class is manage rest end-points for read/write operations of
+ * <object>Trigger</object> objects.
+ * 
+ * @author Himanshu
+ *
+ */
 @Path("trigger")
 public class TriggerController {
 	private TriggerService triggerService;

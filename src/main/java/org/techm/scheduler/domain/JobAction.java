@@ -41,7 +41,7 @@ public class JobAction implements Serializable {
     private String eventId;
     
     /** The message associated to this job action. */
-    @Column(name = "MESSAGE")
+    @Column(name = "MESSAGE", length = 500)
     private String message;
     
     /** The group id associated to this job action. */
@@ -87,11 +87,9 @@ public class JobAction implements Serializable {
      * Sets the action type of job.
      * 
      * @param newActionType the action type to set.
-     * @return this instance.
      */
-	public JobAction setActionType(ActionType newActionType) {
+	public void setActionType(ActionType newActionType) {
 		actionType = newActionType;
-		return this;
 	}
 
     /**
@@ -107,11 +105,9 @@ public class JobAction implements Serializable {
      * Sets the device id of job.
      * 
      * @param newDeviceId the device id to set.
-     * @return this instance.
      */
-	public JobAction setDeviceId(String newDeviceId) {
+	public void setDeviceId(String newDeviceId) {
 		deviceId = newDeviceId;
-		return this;
 	}
 
     /**
@@ -127,11 +123,9 @@ public class JobAction implements Serializable {
      * Sets the command id of job.
      * 
      * @param newCommandId the command id to set.
-     * @return this instance.
      */
-	public JobAction setCommandId(String newCommandId) {
+	public void setCommandId(String newCommandId) {
 		commandId = newCommandId;
-		return this;
 	}
 
     /**
@@ -147,11 +141,9 @@ public class JobAction implements Serializable {
      * Sets the event id of job.
      * 
      * @param newEventId the event id to set.
-     * @return this instance.
      */
-	public JobAction setEventId(String newEventId) {
+	public void setEventId(String newEventId) {
 		eventId = newEventId;
-		return this;
 	}
 
     /**
@@ -167,11 +159,9 @@ public class JobAction implements Serializable {
      * Sets the message of job.
      * 
      * @param newMessage the message to set.
-     * @return this instance.
      */
-	public JobAction setMessage(String newMessage) {
+	public void setMessage(String newMessage) {
 		message = newMessage;
-		return this;
 	}
 
     /**
@@ -187,11 +177,9 @@ public class JobAction implements Serializable {
      * Sets the group id of job.
      * 
      * @param newGroupId the group id to set.
-     * @return this instance.
      */
-	public JobAction setGroupId(String newGroupId) {
+	public void setGroupId(String newGroupId) {
 		groupId = newGroupId;
-		return this;
 	}
 
     /**
@@ -207,21 +195,28 @@ public class JobAction implements Serializable {
      * Sets the stream id of job.
      * 
      * @param newStreamId the stream id to set.
-     * @return this instance.
      */
-	public JobAction setStreamId(String newStreamId) {
+	public void setStreamId(String newStreamId) {
 		streamId = newStreamId;
-		return this;
 	}
-    
+  
+	 /**
+     * Gets the ruleTrigger id  of job.
+     * 
+     * @return Returns the ruleTrigger id.
+     */
     public String getRuleTriggerId() {
 		return ruleTriggerId;
 	}
     
     
-    public JobAction setRuleTriggerId(String ruleTriggerId) {
+    /**
+     * Sets the ruleTrigger id of job.
+     * 
+     * @param ruleTriggerId the ruleTrigger id to set.
+     */
+    public void setRuleTriggerId(String ruleTriggerId) {
 		this.ruleTriggerId = ruleTriggerId;
-		return this;
 	}
 
 }

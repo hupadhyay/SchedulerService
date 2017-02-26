@@ -14,6 +14,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.service.JobService;
 import org.techm.scheduler.utils.SchedulerConstants;
@@ -27,6 +29,9 @@ import org.techm.scheduler.utils.SchedulerConstants;
  */
 @Path("job")
 public class JobController {
+	
+	/** Logger instance to log the incidents. */
+	Logger logger = LoggerFactory.getLogger(JobController.class);
 	
 	/** Instance of Job Service */
 	private JobService jobService;
@@ -51,18 +56,20 @@ public class JobController {
 	@POST
 	@Consumes(SchedulerConstants.JOB_MIME)
 	public Job createJob(Job job) {
+		logger.info("Creating of job object. Object :" + job);
 		return jobService.createJob(job);
 	}
 
 	/**
 	 * PUT Operation to update resource of type <class>Job</class>.
 	 * 
-	 * @param config
+	 * @param trigger
 	 * @return newly updated job object.
 	 */
 	@PUT
 	@Consumes(SchedulerConstants.JOB_MIME)
 	public Job updateJob(Job job) {
+		logger.info("Updating of job object. Object :" + job);
 		return jobService.updateJob(job);
 	}
 
@@ -74,6 +81,7 @@ public class JobController {
 	@GET
 	@Produces(SchedulerConstants.JOB_MIME)
 	public List<Job> getJobAlls() {
+		logger.info("Retrieving all job objects.");
 		List<Job> listOfJobs = jobService.getAllJobs();
 		return listOfJobs;
 	}
@@ -88,6 +96,7 @@ public class JobController {
 	@Path("{jobId}")
 	@Produces(SchedulerConstants.JOB_MIME)
 	public Job getJobById(@NotNull @PathParam("jobId") String jobId) {
+		logger.info("Retrieving of job object based on id: " + jobId);
 		Job job = jobService.getJobById(jobId);
 		return job;
 	}
@@ -102,6 +111,7 @@ public class JobController {
 	@Path("{jobId}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public boolean deleteJob(@NotNull @PathParam("jobId") String jobId) {
+		logger.info("Deleting of job object based on id: " + jobId);
 		return jobService.deleteJob(jobId);
 	}
 }

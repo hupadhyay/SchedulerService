@@ -4,6 +4,12 @@ import java.util.List;
 
 import org.techm.scheduler.domain.Job;
 
+/**
+ * Declaring service methods for <class>Job</class> Repository implementations.
+ * 
+ * @author Himanshu
+ *
+ */
 public interface JobRepository {
 
 	Job createJob(Job Job);

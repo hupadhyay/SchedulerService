@@ -17,6 +17,8 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.ActionType;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.JobAction;
@@ -24,24 +26,41 @@ import org.techm.scheduler.domain.SchedulerKey;
 import org.techm.scheduler.utils.SchedulerConstants;
 
 /**
+ * This class <class>JobEntityReader</class> is used to read the json-body of
+ * <class>Job</class> and convert it into object of Job. First it will check
+ * weather the given type of json body is "scheduler/job.mime" or not. Once it
+ * confirm, It start reading of body content and prepare object of Job.
  * 
  * @author Himanshu
  *
  */
 @Provider
 public class JobEntityReader implements MessageBodyReader<Job> {
+	
+	/** Logger instance to log the incidents. */
+	Logger logger = LoggerFactory.getLogger(JobEntityReader.class);
 
+	/**
+	 * Check weather the body content is of type "scheduler/job.mime" and
+	 * desired type is <class>Job</class>.
+	 */
 	@Override
 	public boolean isReadable(Class<?> typeClass, Type type, Annotation[] annotations, MediaType mediaType) {
 		
+		logger.info("Check for content type and target object type.");
 		return (typeClass == Job.class && mediaType.toString().equals(SchedulerConstants.JOB_MIME));
 	}
 
+	/**
+	 * Convert the given json in the <object>entityStream</object> into the
+	 * object of <class>Job</class>.
+	 */
 	@Override
 	public Job readFrom(Class<Job> typeClass, Type type, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 			throws IOException, WebApplicationException {
-
+		logger.info("Reading of json data from input stream and converting it into object of Job type.");
+		
 		Job job = new Job();
 
 		JsonReader reader = Json.createReader(entityStream);

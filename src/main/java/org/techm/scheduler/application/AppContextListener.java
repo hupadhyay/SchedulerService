@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 @WebListener
 public class AppContextListener implements ServletContextListener {
 	
+	/** Logger instance to log the incidents. */
 	Logger logger = LoggerFactory.getLogger(AppContextListener.class);
 
 	/**

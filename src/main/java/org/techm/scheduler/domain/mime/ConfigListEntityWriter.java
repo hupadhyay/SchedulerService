@@ -18,20 +18,43 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.utils.SchedulerConstants;
 
+/**
+ * This class <class>ConfigListEntityWriter</class> is used to read the object
+ * of type<class>List<Config></class> and convert it into json-array-body of
+ * type "scheduler/config.mime". First it checks weather the given object of
+ * type <class>List<Config></class> and then requested Mediatype. If both match,
+ * It is appropriate writer to write List<Config> object into json-array body.
+ * 
+ * @author Himanshu
+ *
+ */
 @Provider
 public class ConfigListEntityWriter implements MessageBodyWriter<List<Config>> {
 
+	/** Logger instance to log the incidents. */
+	Logger logger = LoggerFactory.getLogger(ConfigListEntityWriter.class);
+
+	/**
+	 * Check the requested media type and request object Type.
+	 */
 	@Override
 	public boolean isWriteable(Class<?> typeClass, Type genericType, Annotation[] annotations, MediaType mediaType) {
 
+		logger.info("Check weather the body content is of type \"scheduler/config.mime\" and type is list of Config object.");
+		
 		return (List.class.isAssignableFrom(typeClass)
 				&& (((ParameterizedType) genericType).getActualTypeArguments()[0]).equals(Config.class)
 				&& mediaType.toString().equals(SchedulerConstants.CONFIG_MIME));
 	}
 
+	/**
+	 * Unused.
+	 */
 	@Override
 	public long getSize(List<Config> t, Class<?> type, Type genericType, Annotation[] annotations,
 			MediaType mediaType) {
@@ -39,10 +62,16 @@ public class ConfigListEntityWriter implements MessageBodyWriter<List<Config>> {
 		return 0;
 	}
 
+	/**
+	 * Convert the object of type <class>List<Trigger></class> into json-array
+	 * formate of media type "scheduler/trigger.mime".
+	 */
 	@Override
 	public void writeTo(List<Config> listConfig, Class<?> type, Type genericType, Annotation[] annotations,
 			MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 			throws IOException, WebApplicationException {
+		
+		logger.info("Write the array of json-body into output stream from the list of object of config type.");
 
 		JsonWriter jsonWriter = Json.createWriter(entityStream);
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();

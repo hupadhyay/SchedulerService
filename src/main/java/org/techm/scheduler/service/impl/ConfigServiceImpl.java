@@ -9,8 +9,16 @@ import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.respository.ConfigRepository;
 import org.techm.scheduler.service.ConfigService;
 
+/**
+ * Implementation of service interface <class>ConfigService</class>. Mainly
+ * delegating call to repository layer.
+ * 
+ * @author Himanshu
+ *
+ */
 public class ConfigServiceImpl implements ConfigService {
 
+	/** Holds the instance of config repository service. */
 	private ConfigRepository configRepository;
 	
 	@Inject

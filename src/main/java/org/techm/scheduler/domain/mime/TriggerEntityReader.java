@@ -17,25 +17,49 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.SchedulerKey;
 import org.techm.scheduler.domain.SchedulerType;
 import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.utils.SchedulerConstants;
 
+/**
+ * This class <class>TriggerEntityReader</class> is used to read the json-body
+ * of <class>Trigger</class> and convert it into object of Trigger. First it
+ * checks weather the given type of json body is "scheduler/trigger.mime" or
+ * not. Once it confirm, It start reading of body content and prepare object of
+ * Trigger.
+ * 
+ * @author Himanshu
+ *
+ */
 @Provider
 public class TriggerEntityReader implements MessageBodyReader<Trigger> {
 
+	/** Logger instance to log the incidents. */
+	Logger logger = LoggerFactory.getLogger(TriggerEntityReader.class);
+
+	/**
+	 * Check weather the body content is of type "scheduler/trigger.mime" and
+	 * desired type is <class>Trigger</class>.
+	 */
 	@Override
 	public boolean isReadable(Class<?> typeClass, Type type, Annotation[] annotations, MediaType mediaType) {
-
+		logger.info("Check for content type and target object type.");
 		return (type == Trigger.class && mediaType.toString().equals(SchedulerConstants.TRIGGER_MIME));
 	}
 
+	/**
+	 * Convert the given json in the <object>entityStream</object> into the
+	 * object of <class>Trigger</class>.
+	 */
 	@Override
 	public Trigger readFrom(Class<Trigger> typeClass, Type type, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 			throws IOException, WebApplicationException {
-
+		logger.info("Reading of json data from inputstream and converting it onto trigger object.");
+		
 		Trigger trigger = new Trigger();
 
 		JsonReader reader = Json.createReader(entityStream);

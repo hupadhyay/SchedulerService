@@ -6,6 +6,8 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 /**
+ * This Exceptio Mapper will show some valuable and readble information to end
+ * user in case of DAO exception occurs.
  * 
  * @author Himanshu
  *

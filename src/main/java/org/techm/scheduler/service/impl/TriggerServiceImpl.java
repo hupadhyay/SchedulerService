@@ -8,12 +8,20 @@ import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.respository.TriggerRepository;
 import org.techm.scheduler.service.TriggerService;
 
+/**
+ * Implementation of service interface <class>TriggerService</class>. Mainly
+ * delegating call to repository layer.
+ * 
+ * @author Himanshu
+ *
+ */
 public class TriggerServiceImpl implements TriggerService {
 
+	/** Holds the instance of trigger repository service. */
 	private TriggerRepository triggerRepository;
-	
+
 	@Inject
-	public TriggerServiceImpl(TriggerRepository triggerRepository){
+	public TriggerServiceImpl(TriggerRepository triggerRepository) {
 		this.triggerRepository = triggerRepository;
 	}
 

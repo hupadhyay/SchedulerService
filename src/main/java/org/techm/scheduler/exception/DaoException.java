@@ -1,5 +1,12 @@
 package org.techm.scheduler.exception;
 
+/**
+ * It is a used defined exception class <class>DaoException</class>. It would
+ * throw from DAO layer.
+ * 
+ * @author Himanshu
+ *
+ */
 public class DaoException extends RuntimeException {
 
 	/**
@@ -33,7 +40,9 @@ public class DaoException extends RuntimeException {
 	}
 
 	/**
-	 * Constructor with Cause <object>throwable</object> and message of exception.
+	 * Constructor with Cause <object>throwable</object> and message of
+	 * exception.
+	 * 
 	 * @param msg
 	 * @param throwable
 	 */

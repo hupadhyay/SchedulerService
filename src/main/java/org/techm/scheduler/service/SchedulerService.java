@@ -5,8 +5,9 @@ import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.Trigger;
 
 /**
+ * Declaring methods for <class>Scheduler</class> Service layer implementations.
  * 
- * @author himanshu
+ * @author Himanshu
  *
  */
 public interface SchedulerService {

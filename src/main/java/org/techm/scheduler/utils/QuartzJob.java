@@ -33,7 +33,7 @@ import org.techm.scheduler.domain.mime.ConfigEntityWriter;
 import org.techm.scheduler.exception.SchedulerException;
 
 public class QuartzJob implements org.quartz.Job {
-
+	
 	String reqeustURL = null;
 
 	String[] weekdays = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };

@@ -4,6 +4,12 @@ import java.util.List;
 
 import org.techm.scheduler.domain.Job;
 
+/**
+ * Declaring methods for <class>Job</class> Service layer implementations.
+ * 
+ * @author Himanshu
+ *
+ */
 public interface JobService {
 	
 	Job createJob(Job job);

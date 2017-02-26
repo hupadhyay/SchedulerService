@@ -8,8 +8,16 @@ import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.respository.JobRepository;
 import org.techm.scheduler.service.JobService;
 
+/**
+ * Implementation of service interface <class>JobService</class>. Mainly
+ * delegating call to repository layer.
+ * 
+ * @author Himanshu
+ *
+ */
 public class JobServiceImpl implements JobService {
 
+	/** Holds the instance of job repository service. */
 	private JobRepository jobRepository;
 
 	@Inject

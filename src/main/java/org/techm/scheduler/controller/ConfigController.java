@@ -14,6 +14,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.service.ConfigService;
 import org.techm.scheduler.utils.SchedulerConstants;
@@ -27,6 +29,9 @@ import org.techm.scheduler.utils.SchedulerConstants;
  */
 @Path("config")
 public class ConfigController {
+	
+	/** Logger instance to log the incidents. */
+	Logger logger = LoggerFactory.getLogger(ConfigController.class);
 
 	/** Instance of Configuration Service */
 	private ConfigService configService;
@@ -51,6 +56,7 @@ public class ConfigController {
 	@POST
 	@Consumes(SchedulerConstants.CONFIG_MIME)
 	public Config createConfig(Config config) {
+		logger.info("Creating of configuration object. Object :" + config);
 		return configService.createConfig(config);
 	}
 
@@ -63,6 +69,7 @@ public class ConfigController {
 	@PUT
 	@Consumes(SchedulerConstants.CONFIG_MIME)
 	public Config updateConfig(Config config) {
+		logger.info("Updating of configuration object. Object: " + config);
 		return configService.updateConfig(config);
 	}
 
@@ -74,6 +81,7 @@ public class ConfigController {
 	@GET
 	@Produces(SchedulerConstants.CONFIG_MIME)
 	public List<Config> getAllConfigurations() {
+		logger.info("Getting all configuration objects.");
 		List<Config> listOfConfigs = configService.getAllConfigs();
 		return listOfConfigs;
 	}
@@ -88,6 +96,7 @@ public class ConfigController {
 	@Path("{configId}")
 	@Produces(SchedulerConstants.CONFIG_MIME)
 	public Config getConfigById(@NotNull @PathParam("configId") String configId) {
+		logger.info("Getting configuration object based on Id: " + configId);
 		Config config = configService.getConfigById(configId);
 		return config;
 	}
@@ -102,6 +111,7 @@ public class ConfigController {
 	@Path("list/{dimOrOnOff}")
 	@Produces(SchedulerConstants.CONFIG_MIME)
 	public List<Config> getConfigsForStatus(@NotNull @PathParam("dimOrOnOff") String dimOrOnOff) {
+		logger.info("Getting configuration objects based on dimType: " + dimOrOnOff);
 		List<Config> listConfig = configService.getConfigsForStatus(dimOrOnOff);
 		return listConfig;
 	}
@@ -116,6 +126,7 @@ public class ConfigController {
 	@Path("{configId}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public boolean deleteConfig(@NotNull @PathParam("configId") String configId) {
+		logger.info("Deleting configuration objects based on id: " + configId);
 		return configService.deleteConfig(configId);
 	}
 }

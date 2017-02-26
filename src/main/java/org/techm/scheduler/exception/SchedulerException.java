@@ -1,6 +1,8 @@
 package org.techm.scheduler.exception;
 
 /**
+ * It is a used defined exception class <class>SchedulerException</class>. It would
+ * throw from Service and Controller layer of scheduler.
  * 
  * @author Himanshu
  *

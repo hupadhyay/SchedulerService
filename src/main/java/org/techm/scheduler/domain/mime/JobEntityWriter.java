@@ -17,26 +17,55 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.utils.SchedulerConstants;
 
+/**
+ * This class <class>JobEntityWriter</class> is used to read the object of
+ * type<class>Job</class> and convert it into json-body of type
+ * "scheduler/job.mime". First it checks weather the given object of type
+ * <class>Job</class> and then requested Mediatype. If both match, It is
+ * appropriate writer to write Job object into json body.
+ * 
+ * @author Himanshu
+ *
+ */
 @Provider
 public class JobEntityWriter implements MessageBodyWriter<Job> {
 
+	/** Logger instance to log the incidents. */
+	Logger logger = LoggerFactory.getLogger(JobEntityWriter.class);
+	
+	/**
+	 * Check the requested media type and request object Type.
+	 */
 	@Override
 	public boolean isWriteable(Class<?> className, Type type, Annotation[] annotations, MediaType mediaType) {
+		logger.info("Check for content type and target object type.");
+		
 		return (type == Job.class && mediaType.toString().equals(SchedulerConstants.JOB_MIME));
 	}
 
+	/**
+	 * Unused.
+	 */
 	@Override
 	public long getSize(Job t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
 		return 0;
 	}
 
+	/**
+	 * Convert the object of type <class>Job</class> into json-formated media
+	 * type "scheduler/job.mime".
+	 */
 	@Override
 	public void writeTo(Job job, Class<?> typeName, Type type, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 			throws IOException, WebApplicationException {
+		logger.info("Writing of json data into outputStream from the object of Job type.");
+		
 		JsonWriter writer = Json.createWriter(entityStream);
 		JsonObjectBuilder jobBuilder = Json.createObjectBuilder();
 

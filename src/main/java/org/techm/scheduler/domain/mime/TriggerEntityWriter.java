@@ -17,27 +17,54 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.utils.SchedulerConstants;
 
+/**
+ * This class <class>TriggerEntityWriter</class> is used to read the object of
+ * type<class>Trigger</class> and convert it into json-body of type
+ * "scheduler/trigger.mime". First it checks weather the given object of type
+ * <class>Trigger</class> and then requested Mediatype. If both match, It is
+ * appropriate writer to write trigger object into json body.
+ * 
+ * @author Himanshu
+ *
+ */
 @Provider
 public class TriggerEntityWriter implements MessageBodyWriter<Trigger> {
+	
+	/** Logger instance to log the incidents. */
+	Logger logger = LoggerFactory.getLogger(TriggerEntityWriter.class);
 
+	/**
+	 * Check the requested media type and request object Type.
+	 */
 	@Override
 	public boolean isWriteable(Class<?> typeClass, Type type, Annotation[] annotations, MediaType mediaType) {
+		logger.info("Check the requested media type and request object Type");
 		return (type == Trigger.class && mediaType.toString().equals(SchedulerConstants.TRIGGER_MIME));
 	}
 
+	/**
+	 * Unused.
+	 */
 	@Override
 	public long getSize(Trigger t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
 		return 0;
 	}
 
+	/**
+	 * Convert the object of type <class>Trigger</class> into json-formated
+	 * media type "scheduler/trigger.mime".
+	 */
 	@Override
 	public void writeTo(Trigger trigger, Class<?> typeClass, Type type, Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
 			throws IOException, WebApplicationException {
-
+		logger.info("Writing of json data into outputstream from the trigger object.");
+		
 		JsonWriter writer = Json.createWriter(entityStream);
 		JsonObjectBuilder triggerBuilder = Json.createObjectBuilder();
 

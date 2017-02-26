@@ -20,10 +20,18 @@ import org.techm.scheduler.domain.Trigger;
 import org.techm.scheduler.service.SchedulerService;
 import org.techm.scheduler.utils.QuartzJob;
 
+/**
+ * Implementation of <interface>SchedulerService</interface>. Mainly used to
+ * scheduled and unschedule job with given trigger.
+ * 
+ * @author Himanshu
+ *
+ */
 public class SchedulerServiceImpl implements SchedulerService {
 
 	/**
-	 * 
+	 * Schedule the job against trigger on the basis of given configuration
+	 * object.
 	 */
 	@Override
 	public boolean scheduleService(Job job, Trigger trigger, Config config, String strUrl) {
@@ -42,13 +50,15 @@ public class SchedulerServiceImpl implements SchedulerService {
 			return true;
 		} catch (SchedulerException ex) {
 			ex.printStackTrace();
-			String expMsg = "Could not schedule job with id: "+ job.getId() + " against trigger with Id: "+ trigger.getId();
+			String expMsg = "Could not schedule job with id: " + job.getId() + " against trigger with Id: "
+					+ trigger.getId();
 			throw new org.techm.scheduler.exception.SchedulerException(expMsg, ex.getCause());
 		}
 	}
 
 	/**
-	 * 
+	 * Remove the scheduler from the quartz repository associated with given
+	 * trigger.
 	 */
 	@Override
 	public boolean removeService(Trigger trigger) {
@@ -62,12 +72,13 @@ public class SchedulerServiceImpl implements SchedulerService {
 			return true;
 		} catch (SchedulerException ex) {
 			ex.printStackTrace();
-			String expMsg = "Could not remove scheduler associated with trigger with id: "+ trigger.getId();
+			String expMsg = "Could not remove scheduler associated with trigger with id: " + trigger.getId();
 			throw new org.techm.scheduler.exception.SchedulerException(expMsg, ex.getCause());
 		}
 	}
 
 	/**
+	 * Create trigger of quartz type from the trigger object.
 	 * 
 	 * @return
 	 */
@@ -82,6 +93,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	}
 
 	/**
+	 * Create cron scheduler.
 	 * 
 	 * @param prmTrigger
 	 * @param map

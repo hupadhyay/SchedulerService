@@ -6,6 +6,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+/**
+ * This Exceptio Mapper will show some valuable and readble information to end
+ * user in case of DAO WebApplicationException occurs.
+ * 
+ * @author Himanshu
+ *
+ */
 @Provider
 public class WebExceptionMapper implements ExceptionMapper<WebApplicationException> {
 

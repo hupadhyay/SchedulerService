@@ -57,6 +57,11 @@ public class QuartzJob implements org.quartz.Job {
 		String jobId = job.getId();
 		int ind = job.getId().lastIndexOf("_");
 		String prefix = jobId.substring(0, ind);
+		
+		if(config.isDim()){
+			ind = prefix.lastIndexOf("_");
+			prefix = prefix.substring(0, ind);
+		}
 
 		// for send command only
 		String deviceId = jobAction.getDeviceId();

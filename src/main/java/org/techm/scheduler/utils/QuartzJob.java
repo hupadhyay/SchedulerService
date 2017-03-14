@@ -33,11 +33,11 @@ import org.techm.scheduler.domain.mime.ConfigEntityWriter;
 import org.techm.scheduler.exception.SchedulerException;
 
 public class QuartzJob implements org.quartz.Job {
-	
+
 	String reqeustURL = null;
 
 	String[] weekdays = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
-	
+
 	ConfigEntityWriter configwriter = new ConfigEntityWriter();
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuartzJob.class);
@@ -57,8 +57,8 @@ public class QuartzJob implements org.quartz.Job {
 		String jobId = job.getId();
 		int ind = job.getId().lastIndexOf("_");
 		String prefix = jobId.substring(0, ind);
-		
-		if(config.isDim()){
+
+		if (config.isDim()) {
 			ind = prefix.lastIndexOf("_");
 			prefix = prefix.substring(0, ind);
 		}
@@ -86,7 +86,7 @@ public class QuartzJob implements org.quartz.Job {
 
 			Response response = webTarget.request("application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
 					.header("Content-Type", "application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
-					.header("Authorization", acessToken).post(Entity.entity(jsonObject.toString(),
+					.header("Authorization", acessToken).post(Entity.entity(message,
 							"application/vnd.com.covisint.platform.messaging.sendCommand.v1+json"));
 
 			// remove the Older Job from Next Execution expression
@@ -301,7 +301,7 @@ public class QuartzJob implements org.quartz.Job {
 			Response response = webTarget.request(SchedulerConstants.CONFIG_MIME)
 					.header("Content-Type", SchedulerConstants.CONFIG_MIME)
 					.put(Entity.entity(object.toString(), SchedulerConstants.CONFIG_MIME));
-			
+
 			if (response.getStatus() == 200) {
 				LOGGER.info("Config object is udpated successfully");
 			}

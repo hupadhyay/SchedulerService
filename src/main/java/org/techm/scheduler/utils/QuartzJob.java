@@ -5,9 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
-import javax.activation.MimeType;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -65,10 +63,10 @@ public class QuartzJob implements org.quartz.Job {
 		}
 
 		// for send command only
-		String deviceId = jobAction.getDeviceId();
-		String commandId = jobAction.getCommandId();
+//		String deviceId = jobAction.getDeviceId();
+//		String commandId = jobAction.getCommandId();
 		String message = jobAction.getMessage();
-		String messageId = UUID.randomUUID().toString();
+//		String messageId = UUID.randomUUID().toString();
 
 //		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 //		jsonBuilder.add("messageId", messageId);
@@ -83,12 +81,11 @@ public class QuartzJob implements org.quartz.Job {
 		try {
 			String acessToken = "Bearer " + getAuthToken();
 			Client client = ClientBuilder.newClient();
-			WebTarget webTarget = client.target("https://apistg.np.covapp.io/composer/v1/composer/command");
+			WebTarget webTarget = client.target("https://apistg.np.covapp.io/composer/v2/composer/command");
 
 			Response response = webTarget.request(MediaType.APPLICATION_JSON)
-					.header("Content-Type", MediaType.APPLICATION_JSON)
-					.header("Authorization", acessToken).post(Entity.entity(message,
-							MediaType.APPLICATION_JSON));
+					.header("Content-Type", MediaType.APPLICATION_JSON).header("Authorization", acessToken)
+					.post(Entity.entity(message, MediaType.APPLICATION_JSON));
 
 			// remove the Older Job from Next Execution expression
 			String removedNextExecutionTime = removeOldNextExecutionTime(config, prefix);

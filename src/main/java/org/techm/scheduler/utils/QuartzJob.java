@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.activation.MimeType;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -69,25 +70,25 @@ public class QuartzJob implements org.quartz.Job {
 		String message = jobAction.getMessage();
 		String messageId = UUID.randomUUID().toString();
 
-		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-		jsonBuilder.add("messageId", messageId);
-		jsonBuilder.add("creation", System.currentTimeMillis());
-		jsonBuilder.add("deviceId", deviceId);
-		jsonBuilder.add("commandId", commandId);
-		jsonBuilder.add("message", encodeMessage(message.getBytes()));
-		jsonBuilder.add("encodingType", "BASE64");
-
-		JsonObject jsonObject = jsonBuilder.build();
+//		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
+//		jsonBuilder.add("messageId", messageId);
+//		jsonBuilder.add("creation", System.currentTimeMillis());
+//		jsonBuilder.add("deviceId", deviceId);
+//		jsonBuilder.add("commandId", commandId);
+//		jsonBuilder.add("message", encodeMessage(message.getBytes()));
+//		jsonBuilder.add("encodingType", "BASE64");
+//
+//		JsonObject jsonObject = jsonBuilder.build();
 
 		try {
 			String acessToken = "Bearer " + getAuthToken();
 			Client client = ClientBuilder.newClient();
 			WebTarget webTarget = client.target("https://apistg.np.covapp.io/composer/v1/composer/command");
 
-			Response response = webTarget.request("application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
-					.header("Content-Type", "application/vnd.com.covisint.platform.messaging.sendCommand.v1+json")
+			Response response = webTarget.request(MediaType.APPLICATION_JSON)
+					.header("Content-Type", MediaType.APPLICATION_JSON)
 					.header("Authorization", acessToken).post(Entity.entity(message,
-							"application/vnd.com.covisint.platform.messaging.sendCommand.v1+json"));
+							MediaType.APPLICATION_JSON));
 
 			// remove the Older Job from Next Execution expression
 			String removedNextExecutionTime = removeOldNextExecutionTime(config, prefix);

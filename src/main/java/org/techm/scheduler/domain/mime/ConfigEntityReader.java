@@ -31,7 +31,7 @@ import org.techm.scheduler.utils.SchedulerConstants;
  */
 @Provider
 public class ConfigEntityReader implements MessageBodyReader<Config> {
-	
+
 	/** Logger instance to log the incidents. */
 	Logger logger = LoggerFactory.getLogger(ConfigEntityReader.class);
 
@@ -54,11 +54,26 @@ public class ConfigEntityReader implements MessageBodyReader<Config> {
 			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 			throws IOException, WebApplicationException {
 		logger.info("Read json-body from inputstream and convert into Config type object.");
-		
-		Config config = new Config();
+
+		Config config = null;
 
 		JsonReader jsonReader = Json.createReader(entityStream);
 		JsonObject jobObject = jsonReader.readObject();
+
+		config = readFromJsonObject(jobObject);
+
+		return config;
+	}
+
+	/**
+	 * Reading of configuration object from jsonObject.
+	 * 
+	 * @param jobObject
+	 * @return object of <class>Config</class>
+	 */
+	public Config readFromJsonObject(JsonObject jobObject) {
+
+		Config config = new Config();
 
 		if (jobObject.containsKey(SchedulerConstants.ID_PROP) && !(jobObject.isNull(SchedulerConstants.ID_PROP))) {
 			String id = jobObject.getString(SchedulerConstants.ID_PROP);

@@ -45,10 +45,6 @@ public class ScheduleController {
 
 	/** Holds the instance of Job Service */
 	@Inject
-	private ConfigService configService;
-
-	/** Holds the instance of Job Service */
-	@Inject
 	private SchedulerService schedulerService;
 
 	/** Logger instance to log the incidents. */
@@ -73,13 +69,12 @@ public class ScheduleController {
 		logger.info("Scheduling Job against trigger in quartz repository.");
 		Job job = jobService.getJobById(jobId);
 		Trigger trigger = triggerService.getTriggerById(triggerId);
-		Config config = configService.getConfigById(configId);
-
+		
 		int index = request.getRequestURL().indexOf("schedule");
 
 		String urlAdd = request.getRequestURL().substring(0, index) + "config";
 
-		boolean bool = schedulerService.scheduleService(job, trigger, config, urlAdd);
+		boolean bool = schedulerService.scheduleService(job, trigger, configId, urlAdd);
 
 		if (bool) {
 			logger.info("Job with id: " + jobId + " is successfully scheduled against trigger with triggerId: "

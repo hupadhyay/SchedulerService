@@ -6,9 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.JobAction;
+import org.techm.scheduler.domain.mime.ConfigEntityReader;
 import org.techm.scheduler.domain.mime.ConfigEntityWriter;
 import org.techm.scheduler.exception.SchedulerException;
 
@@ -38,6 +39,7 @@ public class QuartzJob implements org.quartz.Job {
 	String[] weekdays = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
 
 	ConfigEntityWriter configwriter = new ConfigEntityWriter();
+	ConfigEntityReader configReader = new ConfigEntityReader();
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuartzJob.class);
 
@@ -48,9 +50,12 @@ public class QuartzJob implements org.quartz.Job {
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
 		Job job = (Job) jobDataMap.get("job");
-		Config config = (Config) jobDataMap.get("config");
+		String configId =(String) jobDataMap.get("configId");
 		reqeustURL = (String) jobDataMap.get("url");
 		JobAction jobAction = job.getJobAction();
+		
+		Config config = getConfigurationObject(configId);
+		
 		LOGGER.info("#############: Message: " + jobAction.getMessage());
 
 		String jobId = job.getId();
@@ -62,21 +67,7 @@ public class QuartzJob implements org.quartz.Job {
 			prefix = prefix.substring(0, ind);
 		}
 
-		// for send command only
-//		String deviceId = jobAction.getDeviceId();
-//		String commandId = jobAction.getCommandId();
 		String message = jobAction.getMessage();
-//		String messageId = UUID.randomUUID().toString();
-
-//		JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
-//		jsonBuilder.add("messageId", messageId);
-//		jsonBuilder.add("creation", System.currentTimeMillis());
-//		jsonBuilder.add("deviceId", deviceId);
-//		jsonBuilder.add("commandId", commandId);
-//		jsonBuilder.add("message", encodeMessage(message.getBytes()));
-//		jsonBuilder.add("encodingType", "BASE64");
-//
-//		JsonObject jsonObject = jsonBuilder.build();
 
 		try {
 			String acessToken = "Bearer " + getAuthToken();
@@ -170,6 +161,27 @@ public class QuartzJob implements org.quartz.Job {
 			LOGGER.info("Exception occurs due to some internal error. Message: " + exp.getMessage());
 			throw new SchedulerException("Could not execute scheduled job due to some internal error", exp.getCause());
 		}
+	}
+
+	/**
+	 * To get Operation from configuration Id.
+	 * @param configId
+	 * @return
+	 */
+	private Config getConfigurationObject(String configId) {
+		Client client = ClientBuilder.newClient();
+		WebTarget webTarget = client.target(reqeustURL + "/" + configId);
+
+		Response response = webTarget.request("scheduler/config.mime").get();
+		
+		if (response.getStatus() == 200) {
+			String configData = response.readEntity(String.class);
+			JsonReader jsonReader = Json.createReader(new StringReader(configData));
+			JsonObject jsonObject = jsonReader.readObject();
+			Config config = configReader.readFromJsonObject(jsonObject);
+			return config;
+		}
+		return null;
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package org.techm.scheduler.service;
 
-import org.techm.scheduler.domain.Config;
 import org.techm.scheduler.domain.Job;
 import org.techm.scheduler.domain.Trigger;
 
@@ -12,7 +11,7 @@ import org.techm.scheduler.domain.Trigger;
  */
 public interface SchedulerService {
 	
-	boolean scheduleService(Job job, Trigger trigger, Config config, String urlAdd);
+	boolean scheduleService(Job job, Trigger trigger, String configId, String urlAdd);
 	
 	boolean removeService(Trigger trigger); 
 }
